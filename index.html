@@ -130,7 +130,7 @@
             <button class="tab active" onclick="switchTab('books')">📚 Books</button>
             <button class="tab" onclick="switchTab('event')">📅 Event</button>
             <button class="tab" onclick="switchTab('links')">🔗 Links</button>
-            <button class="tab" onclick="switchTab('cards')">🃏 Three Card Layout</button>
+            <button class="tab" onclick="switchTab('cards')">🃏 Card Layout</button>
         </div>
 
         <!-- Books Tab -->
@@ -399,110 +399,23 @@
                         <label class="toggle-btn"><input type="radio" name="card-layout" value="horizontal" checked><span>Horizontal Row</span></label>
                         <label class="toggle-btn"><input type="radio" name="card-layout" value="vertical"><span>Vertical Stack</span></label>
                     </div>
+                    <br>
+                    <h4 style="margin-top: 1.5rem;">How many cards?</h4>
+                    <div class="toggle-group">
+                        <label class="toggle-btn"><input type="radio" name="card-count" value="1"><span>1</span></label>
+                        <label class="toggle-btn"><input type="radio" name="card-count" value="2"><span>2</span></label>
+                        <label class="toggle-btn"><input type="radio" name="card-count" value="3" checked><span>3</span></label>
+                        <label class="toggle-btn"><input type="radio" name="card-count" value="4"><span>4</span></label>
+                        <label class="toggle-btn"><input type="radio" name="card-count" value="5"><span>5</span></label>
+                        <label class="toggle-btn"><input type="radio" name="card-count" value="6"><span>6</span></label>
+                    </div>
                 <br></div>
             </div>
 
             <div class="step-box">
                 <div class="step-header"><strong>Step 2:</strong> Enter Card Details</div><br>
 
-                <!-- Card 1 -->
-                <div class="content-box">
-                    <h4>Card 1</h4>
-                    <div class="form-group">
-                        <label>Title:*</label>
-                        <input type="text" id="card1-title" placeholder="Card title">
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <textarea id="card1-description" style="min-height: 80px;" placeholder="Brief description for this card..."></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Image URL:</label>
-                            <input type="url" id="card1-image" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Image Alt Text:</label>
-                            <input type="text" id="card1-alt" placeholder="Description of image">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Link URL:</label>
-                            <input type="url" id="card1-link" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Link Text:</label>
-                            <input type="text" id="card1-link-text" placeholder="Read more">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="content-box">
-                    <h4>Card 2</h4>
-                    <div class="form-group">
-                        <label>Title:*</label>
-                        <input type="text" id="card2-title" placeholder="Card title">
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <textarea id="card2-description" style="min-height: 80px;" placeholder="Brief description for this card..."></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Image URL:</label>
-                            <input type="url" id="card2-image" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Image Alt Text:</label>
-                            <input type="text" id="card2-alt" placeholder="Description of image">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Link URL:</label>
-                            <input type="url" id="card2-link" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Link Text:</label>
-                            <input type="text" id="card2-link-text" placeholder="Read more">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="content-box">
-                    <h4>Card 3</h4>
-                    <div class="form-group">
-                        <label>Title:*</label>
-                        <input type="text" id="card3-title" placeholder="Card title">
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <textarea id="card3-description" style="min-height: 80px;" placeholder="Brief description for this card..."></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Image URL:</label>
-                            <input type="url" id="card3-image" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Image Alt Text:</label>
-                            <input type="text" id="card3-alt" placeholder="Description of image">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Link URL:</label>
-                            <input type="url" id="card3-link" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Link Text:</label>
-                            <input type="text" id="card3-link-text" placeholder="Read more">
-                        </div>
-                    </div>
-                </div>
+                <div id="card-forms-container"></div>
 
                 <div class="button-group">
                     <button onclick="formatCards()">Format Cards</button>
@@ -1525,12 +1438,65 @@ ${formattedBooks.join('\n')}
         }
 
         // ===== CARDS TAB FUNCTIONS =====
+        function getCardCount() {
+            return parseInt(document.querySelector('input[name="card-count"]:checked').value, 10);
+        }
+
+        function renderCardForms() {
+            const count = getCardCount();
+            const container = document.getElementById('card-forms-container');
+            let html = '';
+            for (let i = 1; i <= count; i++) {
+                html += `
+                <div class="content-box">
+                    <h4>Card ${i}</h4>
+                    <div class="form-group">
+                        <label>Title:*</label>
+                        <input type="text" id="card${i}-title" placeholder="Card title">
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea id="card${i}-description" style="min-height: 80px;" placeholder="Brief description for this card..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Image URL:</label>
+                            <input type="url" id="card${i}-image" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Image Alt Text:</label>
+                            <input type="text" id="card${i}-alt" placeholder="Description of image">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Link URL:</label>
+                            <input type="url" id="card${i}-link" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Link Text:</label>
+                            <input type="text" id="card${i}-link-text" placeholder="Read more">
+                        </div>
+                    </div>
+                </div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCardForms();
+            document.querySelectorAll('input[name="card-count"]').forEach(radio => {
+                radio.addEventListener('change', renderCardForms);
+            });
+        });
+
         function formatCards() {
             const layout = document.querySelector('input[name="card-layout"]:checked').value;
+            const count = getCardCount();
 
             // Gather card data
             const cards = [];
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= count; i++) {
                 const title = document.getElementById(`card${i}-title`).value.trim();
                 const description = document.getElementById(`card${i}-description`).value.trim();
                 const image = document.getElementById(`card${i}-image`).value.trim();
@@ -1543,20 +1509,21 @@ ${formattedBooks.join('\n')}
 
             // Validate - each card needs at least a title
             const missingTitles = cards.filter(c => !c.title);
-            if (missingTitles.length === 3) {
+            if (missingTitles.length === count) {
                 showStatus('cards', 'Please fill in at least one card with a title.', 'error');
                 return;
             }
             if (missingTitles.length > 0) {
-                showStatus('cards', 'Each card needs at least a title. Please fill in all three cards.', 'error');
+                showStatus('cards', 'Each card needs at least a title.', 'error');
                 return;
             }
 
             // Build the card-layout element attributes
             let attributes = [];
             attributes.push(`  layout="${layout}"`);
+            attributes.push(`  count="${count}"`);
 
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= count; i++) {
                 const card = cards[i - 1];
                 if (card.image) attributes.push(`  card${i}-image="${escapeAttr(card.image)}"`);
                 if (card.alt) attributes.push(`  card${i}-alt="${escapeAttr(card.alt)}"`);
@@ -1628,7 +1595,8 @@ ${attributes.join('\n')}
         }
 
         function clearCards() {
-            for (let i = 1; i <= 3; i++) {
+            const count = getCardCount();
+            for (let i = 1; i <= count; i++) {
                 document.getElementById(`card${i}-title`).value = '';
                 document.getElementById(`card${i}-description`).value = '';
                 document.getElementById(`card${i}-image`).value = '';
