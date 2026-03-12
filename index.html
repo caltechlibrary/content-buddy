@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Buddy - Caltech Library Blog</title>
+    <title>Content Buddy - Caltech Library</title>
 
     <!-- Pico CSS Framework -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
@@ -22,8 +22,13 @@
         /* App-specific layout */
         body { background: #f0f0f0; }
         .app-container { max-width: 900px; margin: 0 auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .logo { text-align: center; margin-bottom: 1rem; }
-        .logo img { max-width: 300px; height: auto; }
+        .app-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e2e2; }
+        .app-header .wordmark { font-size: 1.75rem; font-weight: 700; line-height: 1; }
+        .app-header .wordmark .blog { color: #2a8a99; }
+        .app-header .wordmark .buddy { color: #f87924; }
+        .app-header nav { display: flex; align-items: center; gap: 1rem; }
+        .app-header nav a { color: #555; text-decoration: none; font-size: 0.95rem; }
+        .app-header nav a:hover { color: #111; }
 
         /* Form inputs */
         input, textarea, select { background: white; }
@@ -65,8 +70,10 @@
         .toggle-btn span { display: block; padding: 0.5rem 1rem; background: white; border-right: 1px solid var(--pico-muted-border-color); font-size: 0.9rem; }
         .toggle-btn:last-child span { border-right: none; }
         .toggle-btn input:checked + span { background: #2a8a99; color: white; }
-        .toggle-btn:hover span { background: #f0f0f0; }
+        .toggle-btn:hover span { background: white; }
         .toggle-btn input:checked:hover + span { background: #1f6d79; }
+        .grey-toggle .toggle-btn input:checked + span { background: var(--pico-secondary-background); color: var(--pico-secondary-inverse); }
+        .grey-toggle .toggle-btn input:checked:hover + span { background: var(--pico-secondary-hover-background); }
 
         /* Content box - light grey box with grey outline */
         .content-box { padding: 1rem; background: #f7f9fb; border: 1px solid #ddd; border-radius: var(--pico-border-radius); margin-bottom: 1rem; }
@@ -75,6 +82,8 @@
         /* Link/Book entries */
         .link-entry { padding: 1rem; background: white; border: 1px solid #ddd; border-radius: var(--pico-border-radius); margin-bottom: 1rem; position: relative; }
         .link-entry h4 { margin-top: 0; margin-bottom: 0.75rem; color: #555; font-size: 0.95rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        .books-import-container { padding: 1rem; background: #dee9f4; border: 1px solid #ddd; border-radius: var(--pico-border-radius); margin-bottom: 1rem; }
+        .books-import-container h4 { margin-top: 0; margin-bottom: 0.75rem; color: #555; font-size: 0.95rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
         .add-link-btn { background: none; border: none; color: #b54500; padding: 0; font-weight: bold; }
         .add-link-btn:hover { text-decoration: underline; background: none; }
         .remove-link-btn { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.25rem 0.75rem; font-size: 0.8rem; }
@@ -121,13 +130,17 @@
 <body>
     <main class="container">
         <div class="app-container">
-            <div class="logo">
-            <img src="blog.png" alt="Blog Buddy">
-        </div>
+            <div class="app-header">
+                <div class="wordmark"><span class="blog">Content</span> <span class="buddy">Buddy</span></div>
+                <nav>
+                    <a href="#">Help</a>
+                    <a href="#">Report Bug</a>
+                </nav>
+            </div>
 
         <!-- Tab Navigation -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('books')">📚 Books</button>
+            <button class="tab active" onclick="switchTab('books')">📚 Booklist</button>
             <button class="tab" onclick="switchTab('event')">📅 Event</button>
             <button class="tab" onclick="switchTab('links')">🔗 Links</button>
             <button class="tab" onclick="switchTab('cards')">🃏 Card Layout</button>
@@ -136,36 +149,28 @@
         <!-- Books Tab -->
         <div id="books-tab" class="tab-content active">
             <div class="step-box">
-                <div class="step-header"><strong>Step 1:</strong> Choose Your Layout</div><br>
+                <div class="step-header"><strong>Step 1:</strong> Enter Book Details</div><br>
                 <div class="content-box">
-                    <h4>How should your booklist stack?</h4>
-                    <div class="toggle-group">
-                        <label class="toggle-btn"><input type="radio" name="book-layout" value="vertical" checked><span>Vertical List</span></label>
-                        <label class="toggle-btn"><input type="radio" name="book-layout" value="horizontal"><span>Horizontal Grid</span></label>
+                    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 0.5rem;">
+                        <!-- <h4 style="margin: 0;">Build Your Booklist</h4> -->
+                        <button class="secondary" style="padding: 0.25rem 0.75rem; font-size: 0.85rem; text-align: right;" onclick="toggleISBNFetch()">Import Details</button>
                     </div>
-                <br></div>
-            </div>
 
-            <div class="step-box">
-                <div class="step-header"><strong>Step 2:</strong>Enter Book Details</div><br>
-                <div class="content-box">
-                    <h4>ISBN Fetch</h4>
-                    <textarea id="isbn-input" style="min-height: 100px;" placeholder="Enter ISBNs separated by commas or line breaks"></textarea>
-                    <div class="button-group">
-                        <button onclick="fetchBooksFromISBNs()">Fetch Book Details</button>
+                <div id="isbn-fetch-section" style="display: none;">
+                    <div class="books-import-container">
+                        <h4>ISBN Import</h4>
+                        <div id="books-upload-status" class="status"></div>
+                        <textarea id="isbn-input" style="min-height: 100px;" placeholder="Enter ISBNs separated by commas or line breaks"></textarea>
+                        <div class="button-group">
+                            <button onclick="fetchBooksFromISBNs()">Import Book Details</button>
+                        </div>
                     </div>
-                    <div id="books-upload-status" class="status"></div>
                 </div>
-
-                <div style="text-align: center; margin: 1rem 0; color: #999;">
-                    <strong>— OR —</strong>
-                </div>
-                <div class="content-box">
-                 <h4>Manual Entry</h4> 
 
                 <div id="books-container">
                     <div class="link-entry" data-book-index="0">
                         <h4>Book 1</h4>
+                        <button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>
                         <div class="form-group">
                             <label>Title:*</label>
                             <input type="text" class="book-title-input" placeholder="Book title">
@@ -204,19 +209,30 @@
                 </div>
 
                 <div class="button-group">
-                    <button class="add-link-btn" onclick="addBookEntry()">+ Add Another Book</button>
-                </div>
-                </div>
-
-                <div class="button-group">
-                    <button onclick="formatBooks()">Format Book List</button>
+                    <button onclick="addBookEntry()">+ Add Another Book</button>
                     <button class="secondary" onclick="clearBooks()">Clear All</button>
+                </div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-header"><strong>Step 2:</strong> Format Your Booklist</div><br>
+                <div class="content-box">
+                    <h4>How should your booklist stack?</h4>
+                    <div class="toggle-group grey-toggle">
+                        <label class="toggle-btn"><input type="radio" name="book-layout" value="vertical" checked><span>Vertical List</span></label>
+                        <label class="toggle-btn"><input type="radio" name="book-layout" value="horizontal"><span>Horizontal Grid</span></label>
+                    </div>
+                    <br>
+                    <div class="button-group">
+                        <button onclick="formatBooks()">Format Book List</button>
+                    </div>
                 </div>
                 <div id="books-status" class="status"></div>
             </div>
 
             <div class="step-box">
-                <div class="step-header"><strong>Step 3:</strong> Retrieve Formatted HTML</div><br>
+                <div class="step-header"><strong>Step 3:</strong> Preview & Copy Formatted HTML</div><br>
                 <div class="content-box">
                     <h4>Copy and paste HTML into source tab:</h4>
                 <textarea id="books-output" class="code" placeholder="Formatted HTML will appear here..." readonly></textarea>
@@ -240,66 +256,76 @@
             <div class="step-box">
                 <div class="step-header"><strong>Step 1:</strong> Enter Event Details</div><br>
                 <div class="content-box">
-                    <h4>Quick Fill from .ics</h4>
-                    <label class="file-upload-btn">
-                        <input type="file" id="ics-file-input" accept=".ics" onchange="handleICSUpload(event)" hidden>
-                        <span>Upload File</span>
-                    </label>
-                    <div id="ics-status" class="status"></div>
-                </div>
+                    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 0.5rem;">
+                        <button class="secondary" style="padding: 0.25rem 0.75rem; font-size: 0.85rem;" onclick="toggleICSImport()">Import Details</button>
+                    </div>
 
-                <div style="text-align: center; margin: 1rem 0; color: #999;">
-                    <strong>— OR —</strong>
-                </div>
+                    <div id="ics-import-section" style="display: none;">
+                        <div class="books-import-container">
+                            <h4>Quick Fill from .ics</h4>
+                            <div id="ics-status" class="status"></div>
+                            <label class="file-upload-btn">
+                                <input type="file" id="ics-file-input" accept=".ics" onchange="handleICSUpload(event)" hidden>
+                                <span>Upload File</span>
+                            </label>
+                        </div>
+                    </div>
 
+                    <div id="events-container">
+                        <div class="link-entry" data-event-index="0">
+                            <h4>Event 1</h4>
+                            <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
+                            <div class="form-group">
+                                <label>Title:*</label>
+                                <input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Date:*</label>
+                                    <input type="date" class="event-date-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Time:</label>
+                                    <input type="time" class="event-time-input">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Location:</label>
+                                <input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library">
+                            </div>
+                            <div class="form-group">
+                                <label>Description:*</label>
+                                <textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Link (optional):</label>
+                                <input type="url" class="event-link-input" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label>Link Text (if link provided):</label>
+                                <input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="addEventEntry()">+ Add Event Manually</button>
+                        <button class="secondary" onclick="clearEvent()">Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-header"><strong>Step 2:</strong> Format Your Event</div><br>
                 <div class="content-box">
-                    <h4>Manual Entry</h4>
-                    <div class="form-group">
-                        <label for="event-title">Event Title:*</label>
-                        <input type="text" id="event-title" placeholder="e.g., Author Reading & Q&A">
+                    <div class="button-group">
+                        <button onclick="formatEvent()">Format Event</button>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="event-date">Date:*</label>
-                            <input type="date" id="event-date">
-                        </div>
-                        <div class="form-group">
-                            <label for="event-time">Time:</label>
-                            <input type="time" id="event-time">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="event-location">Location:</label>
-                        <input type="text" id="event-location" placeholder="e.g., Sherman Fairchild Library">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="event-description">Description:*</label>
-                        <textarea id="event-description" style="min-height: 120px;" placeholder="Describe the event..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="event-link">Link (optional):</label>
-                        <input type="url" id="event-link" placeholder="https://...">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="event-link-text">Link Text (if link provided):</label>
-                        <input type="text" id="event-link-text" placeholder="e.g., Register Now, Learn More">
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button onclick="formatEvent()">Format Event</button>
-                    <button class="secondary" onclick="clearEvent()">Clear</button>
                 </div>
                 <div id="event-status" class="status"></div>
             </div>
 
             <div class="step-box">
-                <div class="step-header"><strong>Step 2:</strong> Retrieve Formatted HTML</div><br>
+                <div class="step-header"><strong>Step 3:</strong> Preview & Copy Formatted HTML</div><br>
                 <div class="content-box">
                     <h4>Copy and paste HTML into source tab:</h4>
                 <textarea id="event-output" class="code" placeholder="Formatted HTML will appear here..." readonly></textarea>
@@ -322,55 +348,65 @@
         <div id="links-tab" class="tab-content">
             <div class="step-box">
                 <div class="step-header"><strong>Step 1:</strong> Enter Link Details</div><br>
-                <div class="content-box"><h4>Fetch Link Details</h4>
-                <textarea id="url-input" style="min-height: 80px;" placeholder="Enter URLs, one per line"></textarea>
-                <div class="button-group">
-                    <button onclick="fetchLinksFromURLs()">Fetch Link Details</button>
-                </div>
-                <div id="links-upload-status" class="status"></div>
-</div>
-                <div style="text-align: center; margin: 1rem 0; color: #999;">
-                    <strong>— OR —</strong>
-                </div>
                 <div class="content-box">
-                    <h4>Enter Manually</h4>
-                <div class="form-group">
-                    <label for="links-section-title">Section Title (optional):</label>
-                    <input type="text" id="links-section-title" placeholder="e.g., Related Resources, Further Reading">
-                
-                </div>
+                    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 0.5rem;">
+                        <button class="secondary" style="padding: 0.25rem 0.75rem; font-size: 0.85rem;" onclick="toggleURLImport()">Import Details</button>
+                    </div>
 
-                <div id="links-container">
-                    <div class="link-entry" data-link-index="0">
-                        <h4>Link 1</h4>
-                        <div class="form-group">
-                            <label>Link Title:*</label>
-                            <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library">
-                        </div>
-                        <div class="form-group">
-                            <label>URL:*</label>
-                            <input type="url" class="link-url-input" placeholder="https://...">
-                        </div>
-                        <div class="form-group">
-                            <label>Description:</label>
-                            <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..."></textarea>
+                    <div id="url-import-section" style="display: none;">
+                        <div class="books-import-container">
+                            <h4>Import Link Details</h4>
+                            <div id="links-upload-status" class="status"></div>
+                            <textarea id="url-input" style="min-height: 80px;" placeholder="Enter URLs, one per line"></textarea>
+                            <div class="button-group">
+                                <button onclick="fetchLinksFromURLs()">Import Link Details</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="button-group">
-                    <button class="add-link-btn" onclick="addLinkEntry()">+ Add Another Link</button>
+                    <div class="form-group">
+                        <label for="links-section-title">Section Title (optional):</label>
+                        <input type="text" id="links-section-title" placeholder="e.g., Related Resources, Further Reading">
+                    </div>
+
+                    <div id="links-container">
+                        <div class="link-entry" data-link-index="0">
+                            <h4>Link 1</h4>
+                            <button class="remove-link-btn" onclick="removeLinkEntry(this)">Remove</button>
+                            <div class="form-group">
+                                <label>Link Title:*</label>
+                                <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library">
+                            </div>
+                            <div class="form-group">
+                                <label>URL:*</label>
+                                <input type="url" class="link-url-input" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label>Description:</label>
+                                <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button onclick="addLinkEntry()">+ Add Another Link</button>
+                        <button class="secondary" onclick="clearLinks()">Clear All</button>
+                    </div>
                 </div>
-</div>
-                <div class="button-group">
-                    <button onclick="formatLinks()">Format Links</button>
-                    <button class="secondary" onclick="clearLinks()">Clear All</button>
-                </div>
-                <div id="links-status" class="status"></div>
             </div>
 
             <div class="step-box">
-                <div class="step-header"><strong>Step 2:</strong> Retrieve Formatted HTML</div><br>
+                <div class="step-header"><strong>Step 2:</strong> Format Your Links</div><br>
+                <div class="content-box">
+                    <div class="button-group">
+                        <button onclick="formatLinks()">Format Links</button>
+                    </div>
+                    <div id="links-status" class="status"></div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-header"><strong>Step 3:</strong> Preview & Copy Formatted HTML</div><br>
                 <div class="content-box">
                 <h4>Formatted HTML:</h4>
                 <textarea id="links-output" class="code" placeholder="Formatted HTML will appear here..." readonly></textarea>
@@ -392,40 +428,33 @@
         <!-- Cards Tab -->
         <div id="cards-tab" class="tab-content">
             <div class="step-box">
-                <div class="step-header"><strong>Step 1:</strong> Choose Your Layout</div><br>
-                <div class="content-box">
-                    <h4>How should your cards display?</h4>
-                    <div class="toggle-group">
-                        <label class="toggle-btn"><input type="radio" name="card-layout" value="horizontal" checked><span>Horizontal Row</span></label>
-                        <label class="toggle-btn"><input type="radio" name="card-layout" value="vertical"><span>Vertical Stack</span></label>
-                    </div>
-                    <br>
-                    <h4 style="margin-top: 1.5rem;">How many cards?</h4>
-                    <div class="toggle-group">
-                        <label class="toggle-btn"><input type="radio" name="card-count" value="1"><span>1</span></label>
-                        <label class="toggle-btn"><input type="radio" name="card-count" value="2"><span>2</span></label>
-                        <label class="toggle-btn"><input type="radio" name="card-count" value="3" checked><span>3</span></label>
-                        <label class="toggle-btn"><input type="radio" name="card-count" value="4"><span>4</span></label>
-                        <label class="toggle-btn"><input type="radio" name="card-count" value="5"><span>5</span></label>
-                        <label class="toggle-btn"><input type="radio" name="card-count" value="6"><span>6</span></label>
-                    </div>
-                <br></div>
-            </div>
-
-            <div class="step-box">
-                <div class="step-header"><strong>Step 2:</strong> Enter Card Details</div><br>
+                <div class="step-header"><strong>Step 1:</strong> Enter Card Details</div><br>
 
                 <div id="card-forms-container"></div>
 
                 <div class="button-group">
-                    <button onclick="formatCards()">Format Cards</button>
+                    <button onclick="addCardEntry()">+ Add Another Card</button>
                     <button class="secondary" onclick="clearCards()">Clear All</button>
                 </div>
-                <div id="cards-status" class="status"></div>
             </div>
 
             <div class="step-box">
-                <div class="step-header"><strong>Step 3:</strong> Retrieve Formatted HTML</div><br>
+                <div class="step-header"><strong>Step 2:</strong> Format Your Cards</div><br>
+                <div class="content-box">
+                    <h4>How should your cards display?</h4>
+                    <div class="toggle-group grey-toggle">
+                        <label class="toggle-btn"><input type="radio" name="card-layout" value="horizontal" checked><span>Horizontal Row</span></label>
+                        <label class="toggle-btn"><input type="radio" name="card-layout" value="vertical"><span>Vertical Stack</span></label>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="formatCards()">Format Cards</button>
+                    </div>
+                    <div id="cards-status" class="status"></div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-header"><strong>Step 3:</strong> Preview & Copy Formatted HTML</div><br>
                 <div class="content-box">
                     <h4>Copy and paste HTML into source tab:</h4>
                     <textarea id="cards-output" class="code" placeholder="Formatted HTML will appear here..." readonly></textarea>
@@ -450,6 +479,7 @@
     <script>
         let linkCounter = 1;
         let bookCounter = 1;
+        let eventCounter = 1;
 
         // Tab Switching
         function switchTab(tabName) {
@@ -466,7 +496,22 @@
             event.target.classList.add('active');
         }
 
+        // ===== SHARED HELPERS =====
+        function fetchWithTimeout(url, ms = 10000) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), ms);
+            return fetch(url, { signal: controller.signal })
+                .finally(() => clearTimeout(timer));
+        }
+
         // ===== BOOKS TAB FUNCTIONS =====
+        function toggleISBNFetch() {
+            const section = document.getElementById('isbn-fetch-section');
+            const btn = event.currentTarget;
+            const isHidden = section.style.display === 'none';
+            section.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Close Import' : 'Import Details';
+        }
         function addBookEntry() {
             bookCounter++;
             const container = document.getElementById('books-container');
@@ -537,8 +582,8 @@
                 return;
             }
 
-            statusDiv.textContent = `Fetching data for ${isbns.length} book(s). This may take a few minutes...`;
-            statusDiv.className = 'status';
+            statusDiv.innerHTML = `Importing details for ${isbns.length} book(s)...`;
+            statusDiv.className = 'status success';
             statusDiv.style.display = 'block';
 
             // Clear existing books
@@ -549,13 +594,15 @@
             let successCount = 0;
             let failCount = 0;
 
+
             // Fetch book data for each ISBN
             for (let i = 0; i < isbns.length; i++) {
                 const isbn = isbns[i];
+                statusDiv.innerHTML = `Book ${i + 1} of ${isbns.length}: fimporting from ISBN ${isbn}...`;
 
                 try {
                     // Fetch from Open Library API
-                    const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
+                    const response = await fetchWithTimeout(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
                     const data = await response.json();
 
                     const bookData = data[`ISBN:${isbn}`];
@@ -572,59 +619,27 @@
                         coverUrl = bookData.cover ? bookData.cover.large || bookData.cover.medium || bookData.cover.small || '' : '';
                         // If no cover from API, use colorful placeholder
                         if (!coverUrl) {
-                            coverUrl = 'data:image/svg+xml;base64,' + btoa(`
-                                <svg width="120" height="180" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="120" height="180" fill="#0e9383"/>
-                                    <rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/>
-                                    <text x="60" y="100" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">📚</text>
-                                </svg>
-                            `);
+                            coverUrl = 'data:image/svg+xml,' + encodeURIComponent('<svg width="120" height="180" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="180" fill="#0e9383"/><rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/><text x="60" y="100" font-family="Arial,sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">&#x1F4DA;</text></svg>');
                         }
                         // Leave URL blank - librarians will add their own links
                         url = '';
 
-                        // Fetch description: try Google Books first, fall back to Open Library work
+                        // Fetch description from Google Books with timeout
                         try {
-                            const gbResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+                            const gbResponse = await fetchWithTimeout(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
                             const gbData = await gbResponse.json();
                             if (gbData.items && gbData.items.length > 0) {
                                 description = gbData.items[0].volumeInfo.description || '';
                             }
                         } catch (e) {
-                            // Google Books unavailable
-                        }
-
-                        if (!description) {
-                            try {
-                                const editionResponse = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
-                                const editionData = await editionResponse.json();
-                                if (editionData.works && editionData.works.length > 0) {
-                                    const workResponse = await fetch(`https://openlibrary.org${editionData.works[0].key}.json`);
-                                    const workData = await workResponse.json();
-                                    if (workData.description) {
-                                        const raw = typeof workData.description === 'string'
-                                            ? workData.description
-                                            : (workData.description.value || '');
-                                        // Filter out physical descriptions (e.g. "150 p. : ill. ; 20 cm.")
-                                        if (raw.length > 100) description = raw;
-                                    }
-                                }
-                            } catch (e) {
-                                // Description unavailable
-                            }
+                            // Google Books unavailable or timed out — leave description blank
                         }
 
                         successCount++;
                     } else {
                         // Book not found, but still create an entry with ISBN
                         title = `Book not found (ISBN: ${isbn})`;
-                        coverUrl = 'data:image/svg+xml;base64,' + btoa(`
-                            <svg width="120" height="180" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="120" height="180" fill="#0e9383"/>
-                                <rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/>
-                                <text x="60" y="100" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">📚</text>
-                            </svg>
-                        `);
+                        coverUrl = 'data:image/svg+xml,' + encodeURIComponent('<svg width="120" height="180" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="180" fill="#0e9383"/><rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/><text x="60" y="100" font-family="Arial,sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">&#x1F4DA;</text></svg>');
                         failCount++;
                     }
 
@@ -633,7 +648,7 @@
                     entry.className = 'link-entry';
                     entry.setAttribute('data-book-index', i);
 
-                    const removeBtn = i > 0 ? '<button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>' : '';
+                    const removeBtn = '<button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>';
 
                     // Generate default alt text
                     const altText = title && author ? `Book cover of ${title} by ${author}` : (title ? `Book cover of ${title}` : '');
@@ -678,24 +693,28 @@
                     `;
                     container.appendChild(entry);
                     bookCounter = i;
+                    statusDiv.innerHTML = `Book ${i + 1} of ${isbns.length}: ✓ ${title || isbn}`;
 
                 } catch (error) {
                     console.error(`Error fetching ISBN ${isbn}:`, error);
                     failCount++;
+                    const reason = error.name === 'AbortError' ? 'timed out' : 'failed';
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = `Book ${i + 1} of ${isbns.length}: ISBN ${isbn} ${reason} — entry created for manual editing`;
 
-                    // Still create an entry even if fetch fails
+                    // Still create an entry even if import fails
                     const entry = document.createElement('div');
                     entry.className = 'link-entry';
                     entry.setAttribute('data-book-index', i);
 
-                    const removeBtn = i > 0 ? '<button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>' : '';
+                    const removeBtn = '<button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>';
 
                     entry.innerHTML = `
                         <h4>Book ${i + 1}</h4>
                         ${removeBtn}
                         <div class="form-group">
                             <label>Title:*</label>
-                            <input type="text" class="book-title-input" placeholder="Book title" value="Error fetching ISBN: ${isbn}">
+                            <input type="text" class="book-title-input" placeholder="Book title" value="Error importing ISBN: ${isbn}">
                         </div>
                         <div class="form-row">
                             <div class="form-group">
@@ -713,7 +732,7 @@
                         </div>
                         <div class="form-group">
                             <label>Cover Image URL:</label>
-                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." value="data:image/svg+xml;base64,${btoa(`<svg width="120" height="180" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="180" fill="#0e9383"/><rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/><text x="60" y="100" font-family="Arial, sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">📚</text></svg>`)}">
+                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." value="${'data:image/svg+xml,' + encodeURIComponent('<svg width="120" height="180" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="180" fill="#0e9383"/><rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/><text x="60" y="100" font-family="Arial,sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">&#x1F4DA;</text></svg>')}">
                         </div>
                         <div class="form-group">
                             <label>Cover Alt Text:</label>
@@ -734,10 +753,10 @@
             }
 
             if (successCount > 0) {
-                statusDiv.textContent = `Successfully fetched ${successCount} book(s)! ${failCount > 0 ? `(${failCount} not found)` : ''} Review and edit the details below.`;
+                statusDiv.innerHTML = `Done: ${successCount} book(s) imported successfully.${failCount > 0 ? ` ${failCount} could not be imported but you can add the details manually.` : ''} Review and edit the details below.`;
                 statusDiv.className = 'status success';
             } else {
-                statusDiv.textContent = `Failed to fetch book data. Please check your ISBNs and try again.`;
+                statusDiv.textContent = `Failed to import book data. Blank records were created so you can add the details manually. However, the API can fail intermittenly. Please try again.`;
                 statusDiv.className = 'status error';
             }
         }
@@ -942,6 +961,7 @@ ${formattedBooks.join('\n')}
             document.getElementById('books-container').innerHTML = `
                 <div class="link-entry" data-book-index="0">
                     <h4>Book 1</h4>
+                    <button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>
                     <div class="form-group">
                         <label>Title:*</label>
                         <input type="text" class="book-title-input" placeholder="Book title">
@@ -988,71 +1008,127 @@ ${formattedBooks.join('\n')}
         }
 
         // ===== EVENT TAB FUNCTIONS =====
-        function formatEvent() {
-            const title = document.getElementById('event-title').value.trim();
-            const date = document.getElementById('event-date').value;
-            const time = document.getElementById('event-time').value;
-            const location = document.getElementById('event-location').value.trim();
-            const description = document.getElementById('event-description').value.trim();
-            const link = document.getElementById('event-link').value.trim();
-            const linkText = document.getElementById('event-link-text').value.trim() || 'Learn More';
+        function toggleICSImport() {
+            const section = document.getElementById('ics-import-section');
+            const btn = event.currentTarget;
+            const isHidden = section.style.display === 'none';
+            section.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Close Import' : 'Import Details';
+        }
+        function buildEventHTML(entry) {
+            const title = entry.querySelector('.event-title-input').value.trim();
+            const date = entry.querySelector('.event-date-input').value;
+            const time = entry.querySelector('.event-time-input').value;
+            const location = entry.querySelector('.event-location-input').value.trim();
+            const description = entry.querySelector('.event-description-input').value.trim();
+            const link = entry.querySelector('.event-link-input').value.trim();
+            const linkText = entry.querySelector('.event-link-text-input').value.trim() || 'Learn More';
 
-            if (!title || !date || !description) {
-                showStatus('event', 'Please fill in all required fields (Title, Date, Description).', 'error');
-                return;
-            }
+            if (!title || !date || !description) return null;
 
-            // Format date for calendar box
             const dateObj = new Date(date + 'T00:00:00');
             const day = dateObj.getDate();
             const monthShort = dateObj.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+            const fullDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Format full date for display
-            const fullDate = dateObj.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            // Build meta information
-            let metaHTML = '';
-            metaHTML += `<div class="event-meta-item"><strong>Date:</strong> ${fullDate}</div>`;
-
+            let metaHTML = `<div class="event-meta-item"><strong>Date:</strong> ${fullDate}</div>`;
             if (time) {
                 const tzAbbr = getPacificTZAbbr(date);
                 metaHTML += `<div class="event-meta-item"><strong>Time:</strong> ${formatTime12h(time)} ${tzAbbr}</div>`;
             }
+            if (location) metaHTML += `<div class="event-meta-item"><strong>Location:</strong> ${location}</div>`;
 
-            if (location) {
-                metaHTML += `<div class="event-meta-item"><strong>Location:</strong> ${location}</div>`;
-            }
+            const linkHTML = link ? `<div><a href="${link}" class="event-link">${linkText}</a></div>` : '';
 
-            // Format link if provided
-            let linkHTML = '';
-            if (link) {
-                linkHTML = `<div><a href="${link}" class="event-link">${linkText}</a></div>`;
-            }
-
-            const html = `<!---------- BEGIN EVENT --------->
-<div class="event-item">
+            return `<div class="event-item">
     <div class="event-date-box">
         <div class="event-day">${day}</div>
         <div class="event-month">${monthShort}</div>
     </div>
     <div class="event-content">
         <div class="event-title">${title}</div>
-        <div class="event-meta">
-            ${metaHTML}
-        </div>
+        <div class="event-meta">${metaHTML}</div>
         <div class="event-description">${description}</div>
         ${linkHTML}
     </div>
-</div>
-<!-- END EVENT -->`;
+</div>`;
+        }
 
+        function addEventEntry() {
+            const container = document.getElementById('events-container');
+            const entry = document.createElement('div');
+            entry.className = 'link-entry';
+            entry.setAttribute('data-event-index', eventCounter);
+            entry.innerHTML = `
+                <h4>Event ${eventCounter + 1}</h4>
+                <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
+                <div class="form-group">
+                    <label>Title:*</label>
+                    <input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date:*</label>
+                        <input type="date" class="event-date-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Time:</label>
+                        <input type="time" class="event-time-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library">
+                </div>
+                <div class="form-group">
+                    <label>Description:*</label>
+                    <textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Link (optional):</label>
+                    <input type="url" class="event-link-input" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Link Text (if link provided):</label>
+                    <input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More">
+                </div>`;
+            container.appendChild(entry);
+            eventCounter++;
+        }
+
+        function removeEventEntry(btn) {
+            const entry = btn.closest('.link-entry');
+            const container = document.getElementById('events-container');
+            if (container.querySelectorAll('.link-entry').length > 1) {
+                entry.remove();
+            }
+        }
+
+        function formatEvent() {
+            const entries = document.querySelectorAll('#events-container .link-entry');
+            const blocks = [];
+            let hasErrors = false;
+
+            entries.forEach((entry, i) => {
+                const html = buildEventHTML(entry);
+                if (!html) {
+                    hasErrors = true;
+                } else {
+                    blocks.push(html);
+                }
+            });
+
+            if (blocks.length === 0) {
+                showStatus('event', 'Please fill in all required fields (Title, Date, Description) for at least one event.', 'error');
+                return;
+            }
+            if (hasErrors) {
+                showStatus('event', 'Some events are missing required fields and were skipped.', 'error');
+            }
+
+            const html = `<!---------- BEGIN EVENT${blocks.length > 1 ? 'S' : ''} --------->\n${blocks.join('\n')}\n<!---------- END EVENT${blocks.length > 1 ? 'S' : ''} --------->`;
             document.getElementById('event-output').value = html;
-            showStatus('event', 'Event formatted successfully!', 'success');
+            if (!hasErrors) showStatus('event', `${blocks.length} event${blocks.length > 1 ? 's' : ''} formatted successfully!`, 'success');
         }
 
         function previewEvent() {
@@ -1083,19 +1159,29 @@ ${formattedBooks.join('\n')}
         }
 
         function clearEvent() {
-            document.getElementById('event-title').value = '';
-            document.getElementById('event-date').value = '';
-            document.getElementById('event-time').value = '';
-            document.getElementById('event-location').value = '';
-            document.getElementById('event-description').value = '';
-            document.getElementById('event-link').value = '';
-            document.getElementById('event-link-text').value = '';
+            eventCounter = 1;
+            document.getElementById('events-container').innerHTML = `
+                <div class="link-entry" data-event-index="0">
+                    <h4>Event 1</h4>
+                    <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
+                    <div class="form-group"><label>Title:*</label><input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Date:*</label><input type="date" class="event-date-input"></div>
+                        <div class="form-group"><label>Time:</label><input type="time" class="event-time-input"></div>
+                    </div>
+                    <div class="form-group"><label>Location:</label><input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library"></div>
+                    <div class="form-group"><label>Description:*</label><textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..."></textarea></div>
+                    <div class="form-group"><label>Link (optional):</label><input type="url" class="event-link-input" placeholder="https://..."></div>
+                    <div class="form-group"><label>Link Text (if link provided):</label><input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More"></div>
+                </div>`;
             document.getElementById('event-output').value = '';
             document.getElementById('event-preview-container').innerHTML = '';
             document.getElementById('event-preview').classList.remove('show');
             document.getElementById('event-status').style.display = 'none';
             document.getElementById('ics-file-input').value = '';
-            document.getElementById('ics-status').style.display = 'none';
+            const icsStatus = document.getElementById('ics-status');
+            icsStatus.style.display = 'none';
+            icsStatus.className = 'status';
         }
 
         function handleICSUpload(event) {
@@ -1112,59 +1198,79 @@ ${formattedBooks.join('\n')}
                 return;
             }
 
+            const MAX_EVENTS = 5;
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     const icsData = e.target.result;
                     const jcalData = ICAL.parse(icsData);
                     const comp = new ICAL.Component(jcalData);
-                    const vevent = comp.getFirstSubcomponent('vevent');
+                    const vevents = comp.getAllSubcomponents('vevent');
 
-                    if (!vevent) {
-                        icsStatusDiv.textContent = 'No event found in ICS file.';
+                    if (!vevents || vevents.length === 0) {
+                        icsStatusDiv.textContent = 'No events found in ICS file.';
                         icsStatusDiv.className = 'status error';
                         return;
                     }
 
-                    const event = new ICAL.Event(vevent);
+                    const truncated = vevents.length > MAX_EVENTS;
+                    const eventsToImport = vevents.slice(0, MAX_EVENTS);
 
-                    // Extract event details
-                    const title = event.summary || '';
-                    const location = event.location || '';
-                    const description = event.description || '';
+                    // Clear existing entries
+                    const container = document.getElementById('events-container');
+                    container.innerHTML = '';
+                    eventCounter = 0;
 
-                    // Extract start date/time, always in Pacific time
-                    const startDate = event.startDate;
-                    if (startDate) {
-                        const jsDate = startDate.toJSDate();
-                        const pacificParts = new Intl.DateTimeFormat('en-US', {
-                            timeZone: 'America/Los_Angeles',
-                            year: 'numeric', month: '2-digit', day: '2-digit',
-                            hour: '2-digit', minute: '2-digit', hour12: false
-                        }).formatToParts(jsDate);
+                    eventsToImport.forEach((vevent, i) => {
+                        const event = new ICAL.Event(vevent);
+                        const title = event.summary || '';
+                        const location = event.location || '';
+                        const description = event.description || '';
+                        const url = event.url || '';
 
-                        const year   = pacificParts.find(p => p.type === 'year').value;
-                        const month  = pacificParts.find(p => p.type === 'month').value;
-                        const day    = pacificParts.find(p => p.type === 'day').value;
-                        let   hour   = pacificParts.find(p => p.type === 'hour').value;
-                        const minute = pacificParts.find(p => p.type === 'minute').value;
-                        if (hour === '24') hour = '00';
+                        let dateVal = '';
+                        let timeVal = '';
+                        const startDate = event.startDate;
+                        if (startDate) {
+                            const jsDate = startDate.toJSDate();
+                            const pacificParts = new Intl.DateTimeFormat('en-US', {
+                                timeZone: 'America/Los_Angeles',
+                                year: 'numeric', month: '2-digit', day: '2-digit',
+                                hour: '2-digit', minute: '2-digit', hour12: false
+                            }).formatToParts(jsDate);
+                            const year   = pacificParts.find(p => p.type === 'year').value;
+                            const month  = pacificParts.find(p => p.type === 'month').value;
+                            const day    = pacificParts.find(p => p.type === 'day').value;
+                            let   hour   = pacificParts.find(p => p.type === 'hour').value;
+                            const minute = pacificParts.find(p => p.type === 'minute').value;
+                            if (hour === '24') hour = '00';
+                            dateVal = `${year}-${month}-${day}`;
+                            timeVal = `${hour}:${minute}`;
+                        }
 
-                        document.getElementById('event-date').value = `${year}-${month}-${day}`;
-                        document.getElementById('event-time').value = `${hour}:${minute}`;
-                    }
+                        const entry = document.createElement('div');
+                        entry.className = 'link-entry';
+                        entry.setAttribute('data-event-index', i);
+                        entry.innerHTML = `
+                            <h4>Event ${i + 1}</h4>
+                            <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
+                            <div class="form-group"><label>Title:*</label><input type="text" class="event-title-input" value="${title.replace(/"/g, '&quot;')}" placeholder="e.g., Author Reading & Q&A"></div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Date:*</label><input type="date" class="event-date-input" value="${dateVal}"></div>
+                                <div class="form-group"><label>Time:</label><input type="time" class="event-time-input" value="${timeVal}"></div>
+                            </div>
+                            <div class="form-group"><label>Location:</label><input type="text" class="event-location-input" value="${location.replace(/"/g, '&quot;')}" placeholder="e.g., Sherman Fairchild Library"></div>
+                            <div class="form-group"><label>Description:*</label><textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event...">${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea></div>
+                            <div class="form-group"><label>Link (optional):</label><input type="url" class="event-link-input" value="${url}" placeholder="https://..."></div>
+                            <div class="form-group"><label>Link Text (if link provided):</label><input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More"></div>`;
+                        container.appendChild(entry);
+                        eventCounter = i + 1;
+                    });
 
-                    // Populate form fields
-                    document.getElementById('event-title').value = title;
-                    document.getElementById('event-location').value = location;
-                    document.getElementById('event-description').value = description;
-
-                    // Check for URL in event
-                    if (event.url) {
-                        document.getElementById('event-link').value = event.url;
-                    }
-
-                    icsStatusDiv.textContent = 'ICS file loaded successfully! Review and edit the details below.';
+                    let msg = `${eventsToImport.length} event${eventsToImport.length > 1 ? 's' : ''} imported. Review and edit the details below.`;
+                    if (truncated) msg += ` Note: your file had ${vevents.length} events but the system only imports the first ${MAX_EVENTS}.`;
+                    icsStatusDiv.textContent = msg;
                     icsStatusDiv.className = 'status success';
 
                 } catch (error) {
@@ -1182,6 +1288,14 @@ ${formattedBooks.join('\n')}
         }
 
         // ===== LINKS TAB FUNCTIONS =====
+        function toggleURLImport() {
+            const section = document.getElementById('url-import-section');
+            const btn = event.currentTarget;
+            const isHidden = section.style.display === 'none';
+            section.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Close Import' : 'Import Details';
+        }
+
         function addLinkEntry() {
             linkCounter++;
             const container = document.getElementById('links-container');
@@ -1230,7 +1344,7 @@ ${formattedBooks.join('\n')}
                 return;
             }
 
-            statusDiv.textContent = `Fetching data for ${urls.length} link(s). This may take a few minutes...`;
+            statusDiv.textContent = `Fetching data for ${urls.length} link(s)...`;
             statusDiv.className = 'status';
             statusDiv.style.display = 'block';
 
@@ -1245,10 +1359,11 @@ ${formattedBooks.join('\n')}
             // Fetch metadata for each URL
             for (let i = 0; i < urls.length; i++) {
                 const url = urls[i];
+                statusDiv.textContent = `Fetching link ${i + 1} of ${urls.length}...`;
 
                 try {
                     // Use Microlink API to fetch metadata (free tier, no auth needed)
-                    const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+                    const response = await fetchWithTimeout(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
                     const data = await response.json();
 
                     let title = '';
@@ -1270,7 +1385,7 @@ ${formattedBooks.join('\n')}
                     entry.className = 'link-entry';
                     entry.setAttribute('data-link-index', i);
 
-                    const removeBtn = i > 0 ? '<button class="remove-link-btn" onclick="removeLinkEntry(this)">Remove</button>' : '';
+                    const removeBtn = '<button class="remove-link-btn" onclick="removeLinkEntry(this)">Remove</button>';
 
                     entry.innerHTML = `
                         <h4>Link ${i + 1}</h4>
@@ -1300,7 +1415,7 @@ ${formattedBooks.join('\n')}
                     entry.className = 'link-entry';
                     entry.setAttribute('data-link-index', i);
 
-                    const removeBtn = i > 0 ? '<button class="remove-link-btn" onclick="removeLinkEntry(this)">Remove</button>' : '';
+                    const removeBtn = '<button class="remove-link-btn" onclick="removeLinkEntry(this)">Remove</button>';
 
                     entry.innerHTML = `
                         <h4>Link ${i + 1}</h4>
@@ -1438,78 +1553,90 @@ ${formattedBooks.join('\n')}
         }
 
         // ===== CARDS TAB FUNCTIONS =====
-        function getCardCount() {
-            return parseInt(document.querySelector('input[name="card-count"]:checked').value, 10);
-        }
+        let cardCounter = 1;
 
-        function renderCardForms() {
-            const count = getCardCount();
-            const container = document.getElementById('card-forms-container');
-            let html = '';
-            for (let i = 1; i <= count; i++) {
-                html += `
-                <div class="content-box">
+        function cardEntryHTML(i) {
+            return `
+                <div class="content-box" data-card-index="${i}" style="position: relative;">
                     <h4>Card ${i}</h4>
+                    <button class="remove-link-btn" onclick="removeCardEntry(this)">Remove</button>
                     <div class="form-group">
                         <label>Title:*</label>
-                        <input type="text" id="card${i}-title" placeholder="Card title">
+                        <input type="text" class="card-title-input" placeholder="Card title">
                     </div>
                     <div class="form-group">
                         <label>Description:</label>
-                        <textarea id="card${i}-description" style="min-height: 80px;" placeholder="Brief description for this card..."></textarea>
+                        <textarea class="card-description-input" style="min-height: 80px;" placeholder="Brief description for this card..."></textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Image URL:</label>
-                            <input type="url" id="card${i}-image" placeholder="https://...">
+                            <input type="url" class="card-image-input" placeholder="https://...">
                         </div>
                         <div class="form-group">
                             <label>Image Alt Text:</label>
-                            <input type="text" id="card${i}-alt" placeholder="Description of image">
+                            <input type="text" class="card-alt-input" placeholder="Description of image">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Link URL:</label>
-                            <input type="url" id="card${i}-link" placeholder="https://...">
+                            <input type="url" class="card-link-input" placeholder="https://...">
                         </div>
                         <div class="form-group">
                             <label>Link Text:</label>
-                            <input type="text" id="card${i}-link-text" placeholder="Read more">
+                            <input type="text" class="card-link-text-input" placeholder="Read more">
                         </div>
                     </div>
                 </div>`;
-            }
-            container.innerHTML = html;
+        }
+
+        function addCardEntry() {
+            cardCounter++;
+            const container = document.getElementById('card-forms-container');
+            const div = document.createElement('div');
+            div.innerHTML = cardEntryHTML(cardCounter);
+            container.appendChild(div.firstElementChild);
+            renumberCards();
+        }
+
+        function removeCardEntry(btn) {
+            const container = document.getElementById('card-forms-container');
+            if (container.querySelectorAll('.content-box').length <= 1) return;
+            btn.closest('.content-box').remove();
+            renumberCards();
+        }
+
+        function renumberCards() {
+            document.querySelectorAll('#card-forms-container .content-box').forEach((box, i) => {
+                box.querySelector('h4').textContent = `Card ${i + 1}`;
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderCardForms();
-            document.querySelectorAll('input[name="card-count"]').forEach(radio => {
-                radio.addEventListener('change', renderCardForms);
-            });
+            const container = document.getElementById('card-forms-container');
+            container.innerHTML = cardEntryHTML(1);
         });
 
         function formatCards() {
             const layout = document.querySelector('input[name="card-layout"]:checked').value;
-            const count = getCardCount();
+            const entries = document.querySelectorAll('#card-forms-container .content-box');
 
             // Gather card data
             const cards = [];
-            for (let i = 1; i <= count; i++) {
-                const title = document.getElementById(`card${i}-title`).value.trim();
-                const description = document.getElementById(`card${i}-description`).value.trim();
-                const image = document.getElementById(`card${i}-image`).value.trim();
-                const alt = document.getElementById(`card${i}-alt`).value.trim();
-                const link = document.getElementById(`card${i}-link`).value.trim();
-                const linkText = document.getElementById(`card${i}-link-text`).value.trim();
-
+            entries.forEach(entry => {
+                const title = entry.querySelector('.card-title-input').value.trim();
+                const description = entry.querySelector('.card-description-input').value.trim();
+                const image = entry.querySelector('.card-image-input').value.trim();
+                const alt = entry.querySelector('.card-alt-input').value.trim();
+                const link = entry.querySelector('.card-link-input').value.trim();
+                const linkText = entry.querySelector('.card-link-text-input').value.trim();
                 cards.push({ title, description, image, alt, link, linkText });
-            }
+            });
 
             // Validate - each card needs at least a title
             const missingTitles = cards.filter(c => !c.title);
-            if (missingTitles.length === count) {
+            if (missingTitles.length === cards.length) {
                 showStatus('cards', 'Please fill in at least one card with a title.', 'error');
                 return;
             }
@@ -1521,9 +1648,9 @@ ${formattedBooks.join('\n')}
             // Build the card-layout element attributes
             let attributes = [];
             attributes.push(`  layout="${layout}"`);
-            attributes.push(`  count="${count}"`);
+            attributes.push(`  count="${cards.length}"`);
 
-            for (let i = 1; i <= count; i++) {
+            for (let i = 1; i <= cards.length; i++) {
                 const card = cards[i - 1];
                 if (card.image) attributes.push(`  card${i}-image="${escapeAttr(card.image)}"`);
                 if (card.alt) attributes.push(`  card${i}-alt="${escapeAttr(card.alt)}"`);
@@ -1595,22 +1722,16 @@ ${attributes.join('\n')}
         }
 
         function clearCards() {
-            const count = getCardCount();
-            for (let i = 1; i <= count; i++) {
-                document.getElementById(`card${i}-title`).value = '';
-                document.getElementById(`card${i}-description`).value = '';
-                document.getElementById(`card${i}-image`).value = '';
-                document.getElementById(`card${i}-alt`).value = '';
-                document.getElementById(`card${i}-link`).value = '';
-                document.getElementById(`card${i}-link-text`).value = '';
-            }
+            cardCounter = 1;
+            const container = document.getElementById('card-forms-container');
+            container.innerHTML = cardEntryHTML(1);
             document.getElementById('cards-output').value = '';
             document.getElementById('cards-preview-container').innerHTML = '';
             document.getElementById('cards-preview').classList.remove('show');
             document.getElementById('cards-status').style.display = 'none';
         }
 
-        // ===== UTILITY FUNCTIONS =====
+// ===== UTILITY FUNCTIONS =====
         function formatTime12h(time24) {
             if (!time24) return '';
             const [hours, minutes] = time24.split(':');
