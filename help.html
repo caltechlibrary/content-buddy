@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Content Buddy</title>
+
+    <!-- Pico CSS Framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <style>
+        body { background: #f0f0f0; }
+        .app-container { max-width: 900px; margin: 0 auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .app-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e2e2; }
+        .app-header .wordmark { font-size: 1.75rem; font-weight: 700; line-height: 1; }
+        .app-header .wordmark .blog { color: #2a8a99; }
+        .app-header .wordmark .buddy { color: #f87924; }
+        .app-header nav { display: flex; align-items: center; gap: 1rem; }
+        .app-header nav a { color: #555; text-decoration: none; font-size: 0.95rem; }
+        .app-header nav a:hover { color: #111; }
+
+        /* Help page content */
+        .help-content h2 { font-size: 1.4rem; color: #2a8a99; margin-top: 2rem; margin-bottom: 0.5rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.4rem; }
+        .help-content h3 { font-size: 1.1rem; color: #333; margin-top: 1.5rem; margin-bottom: 0.4rem; }
+        .help-content p { font-size: 0.95rem; line-height: 1.7; color: #444; }
+        .help-content ul { font-size: 0.95rem; line-height: 1.8; color: #444; padding-left: 1.5rem; }
+        .help-content li { margin-bottom: 0.25rem; }
+        .help-content .tip { background: #dee9f4; border-left: 4px solid #2a8a99; padding: 0.75rem 1rem; border-radius: 4px; margin: 1rem 0; font-size: 0.9rem; color: #333; }
+        .help-content .step-list { counter-reset: steps; list-style: none; padding-left: 0; }
+        .help-content .step-list li { counter-increment: steps; padding: 0.6rem 0 0.6rem 2.5rem; position: relative; border-bottom: 1px solid #f0f0f0; }
+        .help-content .step-list li::before { content: counter(steps); position: absolute; left: 0; top: 0.5rem; background: #2a8a99; color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #2a8a99; font-size: 0.9rem; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        code { background: #f0f0f0; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.85rem; color: #333; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="app-container">
+            <div class="app-header">
+                <div class="wordmark"><span class="blog">Content</span> <span class="buddy">Buddy</span></div>
+                <nav>
+                    <a href="help.html">Help</a>
+                    <a href="#">Report Bug</a>
+                </nav>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Content Buddy</a>
+
+            <div class="help-content">
+
+                <h2>Overview</h2>
+                <p>Content Buddy is a tool for Caltech Library staff to create formatted HTML for blog posts and libguides on the library's SpringShare site. You fill out a form (or import content), click Format, preview the result, and paste the generated HTML into the Source tab in CKEditor.</p>
+
+                <h2>Basic Workflow</h2>
+                <ol class="step-list">
+                    <li>Select a content type tab (Booklist, Event, Links, or Card Layout).</li>
+                    <li>Enter your content manually in the form fields, or use the <strong>Import Details</strong> button to auto-fill from an external source.</li>
+                    <li>Click the <strong>Format</strong> button to generate the HTML output.</li>
+                    <li>Click <strong>Preview</strong> to see how the content will look on the blog.</li>
+                    <li>Click <strong>Copy to Clipboard</strong>, then paste into the <strong>Source</strong> tab in CKEditor on your SpringShare blog post.</li>
+                </ol>
+
+                <div class="tip"><strong>Tip:</strong> Always preview before copying. If something looks off, adjust the form fields and reformat.</div>
+
+                <h2>Content Types</h2>
+
+                <h3>📚 Booklist</h3>
+                <p>Use this tab to create a formatted list or grid of books, typically for a staff picks or recommended reading post.</p>
+                <ul>
+                    <li><strong>Layout:</strong> Choose between a vertical list (cover on the left, details on the right) or a horizontal grid (covers and titles in a grid).</li>
+                    <li><strong>Manual entry:</strong> Fill in the Title, Author, ISBN, Description, Cover Image URL, Cover Alt Text, Call Number, and a link to the catalog record. Fields marked with * are required.</li>
+                    <li><strong>ISBN Import:</strong> Click <strong>Import Details</strong>, paste one or more ISBNs (separated by commas or line breaks), and click <strong>Import Book Details</strong>. The tool will look up the title, author, and cover image automatically. Review and edit the results before formatting.</li>
+                    <li>Use <strong>Add Another Book</strong> to add multiple books to the list.</li>
+                </ul>
+                <div class="tip"><strong>Note:</strong> ISBN import relies on the Open Library and Google Books APIs. Lookups may occasionally fail for less common titles — blank entries will be created so you can fill in details manually.</div>
+
+                <h3>📅 Event</h3>
+                <p>Use this tab to format one or more upcoming events with a calendar-style date display.</p>
+                <ul>
+                    <li><strong>Manual entry:</strong> Enter the event Title, Date, Time, Location, Description, and an optional Link and Link Text.</li>
+                    <li><strong>ICS Import:</strong> Click <strong>Import Details</strong> and upload a <code>.ics</code> calendar file exported from your calendar application. The tool will parse up to 5 events and populate the form. All times are converted to Pacific Time.</li>
+                    <li>Use <strong>Add Event Manually</strong> to include multiple events in a single post.</li>
+                </ul>
+
+                <h3>🔗 Links</h3>
+                <p>Use this tab to create a formatted list of links, useful for resource roundups or curated link collections.</p>
+                <ul>
+                    <li><strong>Manual entry:</strong> Enter a Link Title, URL, and optional Description for each link. You can also add an optional Section Title to group links under a heading.</li>
+                    <li><strong>URL Import:</strong> Click <strong>Import Details</strong>, paste one or more URLs (one per line), and click <strong>Import Link Details</strong>. The tool will fetch the page title and description automatically.</li>
+                    <li>Use <strong>Add Another Link</strong> to include multiple links.</li>
+                </ul>
+
+                <h3>🃏 Card Layout</h3>
+                <p>Use this tab to create a card layout for highlighting featured resources, services, or topics side by side.</p>
+                <ul>
+                    <li><strong>Layout:</strong> Choose between a horizontal row (cards side by side) or a vertical stack (image left, content right).</li>
+                    <li>Fill in the Title, Description, Image URL, Image Alt Text, Link URL, and Link Text for each card.</li>
+                    <li>Use <strong>Add Another Card</strong> to include as many cards as you need.</li>
+                    <li>The Card Layout uses a web component and does not depend on the shared stylesheet. Styles are self-contained.</li>
+                </ul>
+
+                <h2>Pasting into SpringShare</h2>
+                <ol class="step-list">
+                    <li>Open your blog post draft in SpringShare (LibGuides).</li>
+                    <li>Click into the content area in CKEditor.</li>
+                    <li>Click the <strong>Source</strong> button in the CKEditor toolbar to switch to HTML source view.</li>
+                    <li>Place your cursor where you want to insert the content.</li>
+                    <li>Paste the copied HTML (<code>Cmd+V</code> or <code>Ctrl+V</code>).</li>
+                    <li>Click <strong>Source</strong> again to return to the visual editor and verify the output looks correct.</li>
+                </ol>
+
+                <h2>Need Help?</h2>
+                <p>If something isn't working as expected, use the <strong>Report Bug</strong> link at the top of the page to let Twila know. Include a description of what you were trying to do and what happened instead. </p>
+                <p>For general questions:</p>
+                <p>
+                Twila Smith<br>
+                Digital Technologies Development Librarian<br>
+                Digital Library Development<br>
+                twila@caltech.edu
+                </p>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
