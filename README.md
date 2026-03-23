@@ -18,7 +18,8 @@ A standalone, single-file (index.html) client-side web app for editors to genera
 ## Files in This Package
 
 1. **index.html** - The main tabbed formatter tool (open in browser)
-2. **content-styles.css** - CSS to add to your blog stylesheet
+2. **help.html** - In-tool help and documentation page
+3. **content-styles.css** - CSS to add to your blog stylesheet
 4. **web component/** - Source files for the Three Card Layout web component
 
 ## How to Use the Tool
