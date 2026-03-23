@@ -319,7 +319,7 @@ The Books, Events, and Links tabs use these CSS classes from `content-styles.css
 
 ## Support
 
-If you encounter any issues or have questions, please contact the web team.
+If you encounter any issues or have questions, please contact Twila Smith.
 
 ---
 
