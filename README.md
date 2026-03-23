@@ -3,11 +3,22 @@
 
 This tool helps content editors format multiple types of content for the Caltech Library blog with consistent, accessible styling including book lists, events, resource links, and featured card layouts.
 
+## Architecture
+A standalone, single-file (index.html) client-side web app for editors to generate styled HTML snippets for SpringShare LibGuides/Blog Posts via CKEditor's source tab.                                         
+                                                                                                                        
+  - Pure JS/HTML/CSS. no build step, no backend, no framework
+  - Single page with tab-based navigation (switchTab())                                                                 
+  - External CSS in content-styles.css that is added to the SpringShare master css file
+  - Web component in web component/card-layout.js (Card Layout tab, Shadow DOM)
+  - All event times are normalized to Pacific Time (PST/PDT) on ICS import
+  - ISBN import has a 10s timeout and falls back gracefully if Google Books fails                                       
+  - Card Layout generates a <card-layout> web component loaded from Caltech Library's CDN                               
+  - No external API keys required (Open Library, Microlink, and Google Books are public/free-tier)   
+
 ## Files in This Package
 
 1. **index.html** - The main tabbed formatter tool (open in browser)
 2. **content-styles.css** - CSS to add to your blog stylesheet
-3. **blog.png** - Logo image
 4. **web component/** - Source files for the Three Card Layout web component
 
 ## How to Use the Tool
