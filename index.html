@@ -89,6 +89,8 @@
         .add-link-btn { background: none; border: none; color: #b54500; padding: 0; font-weight: bold; }
         .add-link-btn:hover { text-decoration: underline; background: none; }
         .remove-link-btn { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.25rem 0.75rem; font-size: 0.8rem; }
+        #url-import-section h2, #ics-import-section h2, #isbn-fetch-section h2 { font-size: 1.25rem; }
+        h2.card-number { font-size: 24px; }
 
         /* Preview section */
         .preview-section { display: none; margin: 2rem 0; padding: 1.5rem; border: 3px solid #2a8a99; border-radius: var(--pico-border-radius); background: white; }
@@ -161,7 +163,7 @@
 
                 <div id="isbn-fetch-section" style="display: none;">
                     <div class="books-import-container">
-                        <h4 id="book-import-text-area">ISBN Import</h4>
+                        <h2 id="book-import-text-area">ISBN Import</h2>
                         <div id="books-upload-status" class="status"></div>
                         <textarea aria-labelledby="book-import-text-area" id="isbn-input" style="min-height: 100px;" placeholder="Enter ISBNs separated by commas or line breaks"></textarea>
                         <div class="button-group">
@@ -172,7 +174,7 @@
 
                 <div id="books-container">
                     <div class="link-entry" data-book-index="0">
-                        <h4>Book 1</h4>
+                        <h3>Book 1</h3>
                         <button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>
                         <div class="form-group">
                             <label for="book-title">Title:*</label>
@@ -269,7 +271,7 @@
 
                     <div id="ics-import-section" style="display: none;">
                         <div class="books-import-container">
-                            <h4>Quick Fill from .ics</h4>
+                            <h2>Quick Fill from .ics</h2>
                             <div id="ics-status" class="status"></div>
                             <label for="ics-file-input" class="file-upload-btn">
                                 <input type="file" id="ics-file-input" accept=".ics" onchange="handleICSUpload(event)" hidden>
@@ -280,7 +282,7 @@
 
                     <div id="events-container">
                         <div class="link-entry" data-event-index="0">
-                            <h4>Event 1</h4>
+                            <h3>Event 1</h3>
                             <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
                             <div class="form-group">
                                 <label for="event-title">Title:*</label>
@@ -362,7 +364,7 @@
 
                     <div id="url-import-section" style="display: none;">
                         <div class="books-import-container">
-                            <h4 id="link-import-text-area">Import Link Details</h4>
+                            <h2 id="link-import-text-area">Import Link Details</h2>
                             <div id="links-upload-status" class="status"></div>
                             <textarea aria-labelledby="link-import-text-area" id="url-input" style="min-height: 80px;" placeholder="Enter URLs, one per line"></textarea>
                             <div class="button-group">
@@ -378,7 +380,7 @@
 
                     <div id="links-container">
                         <div class="link-entry" data-link-index="0">
-                            <h4>Link 1</h4>
+                            <h3>Link 1</h3>
                             <button class="remove-link-btn" onclick="removeLinkEntry(this)" aria-label="link-remove-button">Remove</button>
                             <div class="form-group">
                                 <label for="link-title">Link Title:*</label>
@@ -448,7 +450,7 @@
             <div class="step-box">
                 <div class="step-header"><strong>Step 2:</strong> Format Your Cards</div><br>
                 <div class="content-box">
-                    <h4>How should your cards display?</h4>
+                    <h2>How should your cards display?</h2>
                     <fieldset>
                         <legend class="visually-hidden">How should your cards display</legend>
                         <div class="toggle-group grey-toggle">
@@ -466,7 +468,7 @@
             <div class="step-box">
                 <div class="step-header"><strong>Step 3:</strong> Preview & Copy Formatted HTML</div><br>
                 <div class="content-box">
-                    <h4 id="card-formatted-component">Copy and paste HTML into source tab:</h4>
+                    <h3 id="card-formatted-component">Copy and paste HTML into source tab:</h3>
                     <textarea aria-labelledby="card-formatted-component" id="cards-output" class="code" placeholder="Formatted HTML will appear here..." readonly></textarea>
 
                     <div class="button-group">
@@ -1584,7 +1586,7 @@ ${formattedBooks.join('\n')}
         function cardEntryHTML(i) {
             return `
                 <div class="content-box" data-card-index="${i}" style="position: relative;">
-                    <h4>Card ${i}</h4>
+                    <h2 class="card-number">Card ${i}</h2>
                     <button class="remove-link-btn" onclick="removeCardEntry(this)" aria-label="card-remove-button">Remove</button>
                     <div class="form-group">
                         <label for="card-title">Title:*</label>
@@ -1635,7 +1637,7 @@ ${formattedBooks.join('\n')}
 
         function renumberCards() {
             document.querySelectorAll('#card-forms-container .content-box').forEach((box, i) => {
-                box.querySelector('h4').textContent = `Card ${i + 1}`;
+                box.querySelector('h2').textContent = `Card ${i + 1}`;
             });
         }
 
