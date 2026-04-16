@@ -97,7 +97,7 @@
 .book-view-btn {
     display: inline-block;
     background-color: #19747d;
-    color: white;
+    color: white !important;
     padding: 10px 20px;
     border-radius: 4px;
     text-decoration: none;
@@ -174,7 +174,7 @@
 }
 
 .book-grid-title a {
-    color: #bd4a01;
+    color: #bd4b00;
     text-decoration: none;
     font-weight: bold;
 }
@@ -259,13 +259,13 @@
 }
 
 .event-link {
-    color: #bd4a01;
+    color: #bd4b00 !important;
     text-decoration: none;
     font-weight: bold;
 }
 
 .event-link:hover {
-    color: #bd4a01;
+    color: #bd4b00;
 }
 
 /* ===== LINK SECTION STYLING ===== */
@@ -309,7 +309,7 @@
 }
 
 .link-title a {
-    color: #bd4a01;
+    color: #bd4b00;
     text-decoration: none;
 }
 
