@@ -3,6 +3,9 @@
    Includes: Books, Events, Links
    ============================================ */
 
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.ext-link-icon { display: inline-block; vertical-align: middle; margin-left: 3px; }
+
 /* ===== BOOK LIST STYLING ===== */
 
 /* Main container for each book entry */
@@ -179,6 +182,10 @@
     font-weight: bold;
 }
 
+.book-grid-title a:hover {
+    text-decoration: underline;
+}
+
 /* Book author in grid */
 .book-grid-author {
     font-size: 0.85rem;
@@ -266,6 +273,7 @@
 
 .event-link:hover {
     color: #bd4b00;
+    text-decoration: underline;
 }
 
 /* ===== LINK SECTION STYLING ===== */
@@ -314,7 +322,7 @@
 }
 
 .link-title a:hover {
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .link-description {

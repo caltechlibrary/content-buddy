@@ -19,6 +19,10 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
+        /* Global focus indicator */
+        :focus-visible { outline: 2px solid #19747d !important; outline-offset: 2px; box-shadow: none !important; }
+        .ext-link-icon { display: inline-block; vertical-align: middle; margin-left: 3px; }
+
         /* App-specific layout */
         body { background: #f0f0f0; }
         .app-container { max-width: 900px; margin: 0 auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -45,7 +49,7 @@
         .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--pico-muted-border-color); margin-bottom: 1rem; }
         .tab { padding: 0.75rem 1.5rem; background: none; border: none; border-bottom: 4px solid transparent; cursor: pointer; margin: 0; color: #555; outline: none; box-shadow: none; }
         .tab:hover { background: #f5f5f5; color: #111; outline: none; box-shadow: none; }
-        .tab:focus { outline: none; box-shadow: none; }
+        .tab:focus-visible { outline: 2px solid #19747d; outline-offset: 2px; box-shadow: none; }
         .tab.active { border-bottom-color: #f87924; color: #111; background: #f5f5f5; outline: none; box-shadow: none; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -67,7 +71,8 @@
         /* Toggle button group (segmented control style) */
         .toggle-group { display: inline-flex; border: 1px solid var(--pico-muted-border-color); border-radius: var(--pico-border-radius); overflow: hidden; }
         .toggle-btn { cursor: pointer; margin: 0; }
-        .toggle-btn input { display: none; }
+        .toggle-btn input { position: absolute; opacity: 0; width: 1px; height: 1px; overflow: hidden; }
+        .toggle-btn input:focus-visible + span { outline: 2px solid #19747d; outline-offset: 2px; }
         .toggle-btn span { display: block; padding: 0.5rem 1rem; background: white; border-right: 1px solid var(--pico-muted-border-color); font-size: 0.9rem; }
         .toggle-btn:last-child span { border-right: none; }
         .toggle-btn input:checked + span { background: #19747d; color: white; }
@@ -90,7 +95,7 @@
         .add-link-btn:hover { text-decoration: underline; background: none; }
         .remove-link-btn { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.25rem 0.75rem; font-size: 0.8rem; }
         #url-import-section h2, #ics-import-section h2, #isbn-fetch-section h2 { font-size: 1.25rem; }
-        h2.card-number { font-size: 24px; }
+        h2.card-number { font-size: 1.5rem; }
 
         /* Preview section */
         .preview-section { display: none; margin: 2rem 0; padding: 1.5rem; border: 3px solid #19747d; border-radius: var(--pico-border-radius); background: white; }
@@ -129,7 +134,7 @@
         .preview-container .event-meta strong { color: #555; margin-right: 5px; }
         .preview-container .event-description { line-height: 1.6; margin-bottom: 15px; color: #555; }
         .preview-container .event-link { color: #bd4b00 !important; text-decoration: none; font-weight: bold; }
-        .preview-container .event-link:hover { color: #bd4b00; }
+        .preview-container .event-link:hover { color: #bd4b00; text-decoration: underline; }
 
         .preview-container .link-section { margin-bottom: 30px; }
         .preview-container .link-section-title { font-size: 1.3rem; font-weight: bold; color: #333; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0; }
@@ -138,7 +143,7 @@
         .preview-container .link-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 10px; }
         .preview-container .link-title a { color: #bd4b00; text-decoration: none; }
         .preview-container .link-title::before { content: "🔗 "; margin-right: 8px; }
-        .preview-container .link-title a:hover { text-decoration: none; }
+        .preview-container .link-title a:hover { text-decoration: underline; }
         .preview-container .link-description { color: #555; line-height: 1.5; }
 
         .preview-container .book-grid { display: flex; flex-wrap: wrap; gap: 25px; justify-content: flex-start; }
@@ -149,6 +154,7 @@
         .preview-container .book-grid-cover a { display: block; }
         .preview-container .book-grid-title { font-weight: bold; font-size: 0.95rem; color: #333; margin-bottom: 5px; line-height: 1.3; }
         .preview-container .book-grid-title a { color: #bd4b00; text-decoration: none; font-weight: bold; }
+        .preview-container .book-grid-title a:hover { text-decoration: underline; }
         .preview-container .book-grid-author { font-size: 0.85rem; color: #555; margin-bottom: 8px; }
     </style>
 </head>
@@ -159,21 +165,21 @@
                 <h1><a href="index.html" class="wordmark" style="text-decoration: none;"><span class="blog">Content</span> <span class="buddy">Buddy</span></a></h1>
                 <nav>
                     <a href="help.html">Help</a>
-                    <a href="#">Contact</a>
-                    <a href="https://forms.gle/Q8qvoLaSTp8s44Gx7" target="_blank">Report Bug</a>
+                    <a href="https://forms.gle/GVPLeQuCNcU524z5A" target="_blank" rel="noopener noreferrer">Contact<svg class="ext-link-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="opens in new tab"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                    <a href="https://forms.gle/Q8qvoLaSTp8s44Gx7" target="_blank" rel="noopener noreferrer">Report Bug<svg class="ext-link-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="opens in new tab"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </nav>
             </div>
 
         <!-- Tab Navigation -->
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('books')">📚 Booklist</button>
-            <button class="tab" onclick="switchTab('event')">📅 Event</button>
-            <button class="tab" onclick="switchTab('links')">🔗 Links</button>
-            <button class="tab" onclick="switchTab('cards')">🃏 Card Layout</button>
+        <div class="tabs" role="tablist">
+            <button class="tab active" role="tab" aria-selected="true" aria-controls="books-tab" id="tab-books" onclick="switchTab('books')">📚 Booklist</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="event-tab" id="tab-event" onclick="switchTab('event')">📅 Event</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="links-tab" id="tab-links" onclick="switchTab('links')">🔗 Links</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="cards-tab" id="tab-cards" onclick="switchTab('cards')">🃏 Card Layout</button>
         </div>
 
         <!-- Books Tab -->
-        <div id="books-tab" class="tab-content active">
+        <div id="books-tab" class="tab-content active" role="tabpanel" aria-labelledby="tab-books" tabindex="0">
             <div class="step-box">
                 <div class="step-header"><strong>Step 1:</strong> Enter Book Details</div><br>
                 <div class="content-box">
@@ -198,38 +204,38 @@
                         <h3>Book 1</h3>
                         <button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>
                         <div class="form-group">
-                            <label for="book-title">Title:*</label>
-                            <input type="text" class="book-title-input" placeholder="Book title" id="book-title">
+                            <label for="book-title-0">Title:*</label>
+                            <input type="text" class="book-title-input" placeholder="Book title" id="book-title-0">
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="book-author">Author:</label>
-                                <input type="text" class="book-author-input" placeholder="Author name" id="book-author">
+                                <label for="book-author-0">Author:</label>
+                                <input type="text" class="book-author-input" placeholder="Author name" id="book-author-0">
                             </div>
                             <div class="form-group">
-                                <label for="book-isbn">ISBN:</label>
-                                <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn">
+                                <label for="book-isbn-0">ISBN:</label>
+                                <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn-0">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="book-description">Description:</label>
-                            <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description"></textarea>
+                            <label for="book-description-0">Description:</label>
+                            <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description-0"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="book-cover-image">Cover Image URL:</label>
-                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image">
+                            <label for="book-cover-image-0">Cover Image URL:</label>
+                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image-0">
                         </div>
                         <div class="form-group">
-                            <label for="book-cover-alt-text">Cover Alt Text:</label>
-                            <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text">
+                            <label for="book-cover-alt-text-0">Cover Alt Text:</label>
+                            <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text-0">
                         </div>
                         <div class="form-group">
-                            <label for="book-call-number">Call Number (optional):</label>
-                            <input type="text" class="book-callnumber-input" placeholder="Call number" id="book-call-number">
+                            <label for="book-call-number-0">Call Number (optional):</label>
+                            <input type="text" class="book-callnumber-input" placeholder="Call number" id="book-call-number-0">
                         </div>
                         <div class="form-group">
-                            <label for="book-permalink">URL/Permalink (optional):</label>
-                            <input type="url" class="book-url-input" placeholder="https://..." id="book-permalink">
+                            <label for="book-permalink-0">URL/Permalink (optional):</label>
+                            <input type="url" class="book-url-input" placeholder="https://..." id="book-permalink-0">
                         </div>
                     </div>
                 </div>
@@ -282,7 +288,7 @@
         </div>
 
         <!-- Event Tab -->
-        <div id="event-tab" class="tab-content">
+        <div id="event-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-event" tabindex="0">
             <div class="step-box">
                 <div class="step-header"><strong>Step 1:</strong> Enter Event Details</div><br>
                 <div class="content-box">
@@ -306,34 +312,34 @@
                             <h3>Event 1</h3>
                             <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
                             <div class="form-group">
-                                <label for="event-title">Title:*</label>
-                                <input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A" id="event-title">
+                                <label for="event-title-0">Title:*</label>
+                                <input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A" id="event-title-0">
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="event-date">Date:*</label>
-                                    <input type="date" class="event-date-input" id="event-date">
+                                    <label for="event-date-0">Date:*</label>
+                                    <input type="date" class="event-date-input" id="event-date-0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="event-time">Time:</label>
-                                    <input type="time" class="event-time-input" id="event-time">
+                                    <label for="event-time-0">Time:</label>
+                                    <input type="time" class="event-time-input" id="event-time-0">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="event-location">Location:</label>
-                                <input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library" id="event-location">
+                                <label for="event-location-0">Location:</label>
+                                <input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library" id="event-location-0">
                             </div>
                             <div class="form-group">
-                                <label for="event-description">Description:*</label>
-                                <textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..." id="event-description"></textarea>
+                                <label for="event-description-0">Description:*</label>
+                                <textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..." id="event-description-0"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="event-link-url">Link (optional):</label>
-                                <input type="url" class="event-link-input" placeholder="https://..." id="event-link-url">
+                                <label for="event-link-url-0">Link (optional):</label>
+                                <input type="url" class="event-link-input" placeholder="https://..." id="event-link-url-0">
                             </div>
                             <div class="form-group">
-                                <label for="event-link-text">Link Text (if link provided):</label>
-                                <input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More" id="event-link-text">
+                                <label for="event-link-text-0">Link Text (if link provided):</label>
+                                <input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More" id="event-link-text-0">
                             </div>
                         </div>
                     </div>
@@ -375,7 +381,7 @@
         </div>
 
         <!-- Links Tab -->
-        <div id="links-tab" class="tab-content">
+        <div id="links-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-links" tabindex="0">
             <div class="step-box">
                 <div class="step-header"><strong>Step 1:</strong> Enter Link Details</div><br>
                 <div class="content-box">
@@ -396,7 +402,7 @@
 
                     <div class="form-group">
                         <label for="links-section-title">Section Title (optional):</label>
-                        <input type="text" id="links-section-title" placeholder="e.g., Related Resources, Further Reading" id="link-title-section">
+                        <input type="text" id="links-section-title" placeholder="e.g., Related Resources, Further Reading">
                     </div>
 
                     <div id="links-container">
@@ -404,16 +410,16 @@
                             <h3>Link 1</h3>
                             <button class="remove-link-btn" onclick="removeLinkEntry(this)" aria-label="link-remove-button">Remove</button>
                             <div class="form-group">
-                                <label for="link-title">Link Title:*</label>
-                                <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" id="link-title">
+                                <label for="link-title-0">Link Title:*</label>
+                                <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" id="link-title-0">
                             </div>
                             <div class="form-group">
-                                <label for="link-url">URL:*</label>
-                                <input type="url" class="link-url-input" placeholder="https://..." id="link-url">
+                                <label for="link-url-0">URL:*</label>
+                                <input type="url" class="link-url-input" placeholder="https://..." id="link-url-0">
                             </div>
                             <div class="form-group">
-                                <label for="link-description">Description:</label>
-                                <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..." id="link-description"></textarea>
+                                <label for="link-description-0">Description:</label>
+                                <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..." id="link-description-0"></textarea>
                             </div>
                         </div>
                     </div>
@@ -456,7 +462,7 @@
         </div>
 
         <!-- Cards Tab -->
-        <div id="cards-tab" class="tab-content">
+        <div id="cards-tab" class="tab-content" role="tabpanel" aria-labelledby="tab-cards" tabindex="0">
             <div class="step-box">
                 <div class="step-header"><strong>Step 1:</strong> Enter Card Details</div><br>
 
@@ -516,20 +522,21 @@
 
         // Tab Switching
         function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+            document.querySelectorAll('.tab-content').forEach(panel => {
+                panel.classList.remove('active');
             });
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
+                tab.setAttribute('aria-selected', 'false');
             });
 
-            // Show selected tab
             document.getElementById(tabName + '-tab').classList.add('active');
             event.target.classList.add('active');
+            event.target.setAttribute('aria-selected', 'true');
         }
 
         // ===== SHARED HELPERS =====
+        const EXT_LINK_ICON = `<svg class="ext-link-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="opens in new tab"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
         function fetchWithTimeout(url, ms = 10000) {
             const controller = new AbortController();
             const timer = setTimeout(() => controller.abort(), ms);
@@ -552,41 +559,41 @@
             newEntry.className = 'link-entry';
             newEntry.setAttribute('data-book-index', bookCounter);
             newEntry.innerHTML = `
-                <h4>Book ${bookCounter + 1}</h4>
+                <h4>Book ${bookCounter}</h4>
                 <button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>
                 <div class="form-group">
-                    <label for="book-title">Title:*</label>
-                    <input type="text" class="book-title-input" placeholder="Book title" id="book-title">
+                    <label for="book-title-${bookCounter}">Title:*</label>
+                    <input type="text" class="book-title-input" placeholder="Book title" id="book-title-${bookCounter}">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="book-author">Author:</label>
-                        <input type="text" class="book-author-input" placeholder="Author name" id="book-author">
+                        <label for="book-author-${bookCounter}">Author:</label>
+                        <input type="text" class="book-author-input" placeholder="Author name" id="book-author-${bookCounter}">
                     </div>
                     <div class="form-group">
-                        <label for="book-isbn">ISBN:</label>
-                        <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn">
+                        <label for="book-isbn-${bookCounter}">ISBN:</label>
+                        <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn-${bookCounter}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="book-description">Description:</label>
-                    <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description"></textarea>
+                    <label for="book-description-${bookCounter}">Description:</label>
+                    <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description-${bookCounter}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="book-cover-image">Cover Image URL:</label>
-                    <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image">
+                    <label for="book-cover-image-${bookCounter}">Cover Image URL:</label>
+                    <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image-${bookCounter}">
                 </div>
                 <div class="form-group">
-                    <label for="book-cover-alt-text">Cover Alt Text:</label>
-                    <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text">
+                    <label for="book-cover-alt-text-${bookCounter}">Cover Alt Text:</label>
+                    <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text-${bookCounter}">
                 </div>
                 <div class="form-group">
-                    <label for="book-call-number">Call Number (optional):</label>
-                    <input type="text" class="book-callnumber-input" placeholder="Call number">
+                    <label for="book-call-number-${bookCounter}">Call Number (optional):</label>
+                    <input type="text" class="book-callnumber-input" placeholder="Call number" id="book-call-number-${bookCounter}">
                 </div>
                 <div class="form-group">
-                    <label for="book-permalink">URL/Permalink:</label>
-                    <input type="url" class="book-url-input" placeholder="https://...">
+                    <label for="book-permalink-${bookCounter}">URL/Permalink:</label>
+                    <input type="url" class="book-url-input" placeholder="https://..." id="book-permalink-${bookCounter}">
                 </div>
             `;
             container.appendChild(newEntry);
@@ -706,38 +713,38 @@
                         <h4>Book ${i + 1}</h4>
                         ${removeBtn}
                         <div class="form-group">
-                            <label for="book-title">Title:*</label>
-                            <input type="text" class="book-title-input" placeholder="Book title" value="${title.replace(/"/g, '&quot;')}">
+                            <label for="book-title-${i}">Title:*</label>
+                            <input type="text" class="book-title-input" placeholder="Book title" id="book-title-${i}" value="${title.replace(/"/g, '&quot;')}">
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="book-author">Author:</label>
-                                <input type="text" class="book-author-input" placeholder="Author name" value="${author.replace(/"/g, '&quot;')}">
+                                <label for="book-author-${i}">Author:</label>
+                                <input type="text" class="book-author-input" placeholder="Author name" id="book-author-${i}" value="${author.replace(/"/g, '&quot;')}">
                             </div>
                             <div class="form-group">
-                                <label for="book-isbn">ISBN:</label>
-                                <input type="text" class="book-isbn-input" placeholder="ISBN" value="${isbn}">
+                                <label for="book-isbn-${i}">ISBN:</label>
+                                <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn-${i}" value="${isbn}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="book-description">Description:</label>
-                            <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book...">${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                            <label for="book-description-${i}">Description:</label>
+                            <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description-${i}">${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="book-cover-image">Cover Image URL:</label>
-                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." value="${coverUrl}">
+                            <label for="book-cover-image-${i}">Cover Image URL:</label>
+                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image-${i}" value="${coverUrl}">
                         </div>
                         <div class="form-group">
-                            <label for="book-cover-alt-text">Cover Alt Text:</label>
-                            <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" value="${altText.replace(/"/g, '&quot;')}">
+                            <label for="book-cover-alt-text-${i}">Cover Alt Text:</label>
+                            <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text-${i}" value="${altText.replace(/"/g, '&quot;')}">
                         </div>
                         <div class="form-group">
-                            <label for="book-call-number">Call Number (optional):</label>
-                            <input type="text" class="book-callnumber-input" placeholder="Call number" value="">
+                            <label for="book-call-number-${i}">Call Number (optional):</label>
+                            <input type="text" class="book-callnumber-input" placeholder="Call number" id="book-call-number-${i}" value="">
                         </div>
                         <div class="form-group">
-                            <label for="book-permalink">URL/Permalink:</label>
-                            <input type="url" class="book-url-input" placeholder="https://..." value="${url}">
+                            <label for="book-permalink-${i}">URL/Permalink:</label>
+                            <input type="url" class="book-url-input" placeholder="https://..." id="book-permalink-${i}" value="${url}">
                         </div>
                     `;
                     container.appendChild(entry);
@@ -762,38 +769,38 @@
                         <h4>Book ${i + 1}</h4>
                         ${removeBtn}
                         <div class="form-group">
-                            <label for="book-title">Title:*</label>
-                            <input type="text" class="book-title-input" placeholder="Book title" value="Error importing ISBN: ${isbn}">
+                            <label for="book-title-${i}">Title:*</label>
+                            <input type="text" class="book-title-input" placeholder="Book title" id="book-title-${i}" value="Error importing ISBN: ${isbn}">
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="book-author">Author:</label>
-                                <input type="text" class="book-author-input" placeholder="Author name" value="">
+                                <label for="book-author-${i}">Author:</label>
+                                <input type="text" class="book-author-input" placeholder="Author name" id="book-author-${i}" value="">
                             </div>
                             <div class="form-group">
-                                <label for="book-isbn">ISBN:</label>
-                                <input type="text" class="book-isbn-input" placeholder="ISBN" value="${isbn}">
+                                <label for="book-isbn-${i}">ISBN:</label>
+                                <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn-${i}" value="${isbn}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="book-description">Description:</label>
-                            <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..."></textarea>
+                            <label for="book-description-${i}">Description:</label>
+                            <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description-${i}"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="book-cover-image">Cover Image URL:</label>
-                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." value="${'data:image/svg+xml,' + encodeURIComponent('<svg width="120" height="180" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="180" fill="#0e9383"/><rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/><text x="60" y="100" font-family="Arial,sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">&#x1F4DA;</text></svg>')}">
+                            <label for="book-cover-image-${i}">Cover Image URL:</label>
+                            <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image-${i}" value="${'data:image/svg+xml,' + encodeURIComponent('<svg width="120" height="180" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="180" fill="#0e9383"/><rect x="10" y="15" width="100" height="150" fill="#0c8073" opacity="0.3"/><text x="60" y="100" font-family="Arial,sans-serif" font-size="48" fill="white" text-anchor="middle" opacity="0.8">&#x1F4DA;</text></svg>')}">
                         </div>
                         <div class="form-group">
-                            <label for="book-cover-alt-text">Cover Alt Text:</label>
-                            <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" value="">
+                            <label for="book-cover-alt-text-${i}">Cover Alt Text:</label>
+                            <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text-${i}" value="">
                         </div>
                         <div class="form-group">
-                            <label for="book-call-number">Call Number (optional):</label>
-                            <input type="text" class="book-callnumber-input" placeholder="Call number" value="">
+                            <label for="book-call-number-${i}">Call Number (optional):</label>
+                            <input type="text" class="book-callnumber-input" placeholder="Call number" id="book-call-number-${i}" value="">
                         </div>
                         <div class="form-group">
-                            <label for="book-permalink">URL/Permalink:</label>
-                            <input type="url" class="book-url-input" placeholder="https://..." value="">
+                            <label for="book-permalink-${i}">URL/Permalink:</label>
+                            <input type="url" class="book-url-input" placeholder="https://..." id="book-permalink-${i}" value="">
                         </div>
                     `;
                     container.appendChild(entry);
@@ -908,7 +915,7 @@
                 // Add View Book button if URL exists
                 if (book.url) {
                     bookHTML += `
-                <a href="${book.url}" target="_blank" class="book-view-btn">View Book</a>`;
+                <a href="${book.url}" target="_blank" rel="noopener noreferrer" class="book-view-btn">View Book${EXT_LINK_ICON}</a>`;
                 }
 
                 bookHTML += `
@@ -933,7 +940,7 @@
                     if (book.url) {
                         bookHTML += `
         <div class="book-grid-cover">
-            <a href="${book.url}" target="_blank">
+            <a href="${book.url}" target="_blank" rel="noopener noreferrer">
                 <img src="${book.coverUrl}" alt="${imgAlt}">
             </a>
         </div>`;
@@ -948,7 +955,7 @@
                 // Title with optional link
                 if (book.url) {
                     bookHTML += `
-        <div class="book-grid-title"><a href="${book.url}" target="_blank">${book.title}</a></div>`;
+        <div class="book-grid-title"><a href="${book.url}" target="_blank" rel="noopener noreferrer">${book.title}${EXT_LINK_ICON}</a></div>`;
                 } else {
                     bookHTML += `
         <div class="book-grid-title">${book.title}</div>`;
@@ -1012,38 +1019,38 @@ ${formattedBooks.join('\n')}
                     <h4>Book 1</h4>
                     <button class="remove-link-btn" onclick="removeBookEntry(this)">Remove</button>
                     <div class="form-group">
-                        <label>Title:*</label>
-                        <input type="text" class="book-title-input" placeholder="Book title">
+                        <label for="book-title-0">Title:*</label>
+                        <input type="text" class="book-title-input" placeholder="Book title" id="book-title-0">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Author:</label>
-                            <input type="text" class="book-author-input" placeholder="Author name">
+                            <label for="book-author-0">Author:</label>
+                            <input type="text" class="book-author-input" placeholder="Author name" id="book-author-0">
                         </div>
                         <div class="form-group">
-                            <label>ISBN:</label>
-                            <input type="text" class="book-isbn-input" placeholder="ISBN">
+                            <label for="book-isbn-0">ISBN:</label>
+                            <input type="text" class="book-isbn-input" placeholder="ISBN" id="book-isbn-0">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Description:</label>
-                        <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..."></textarea>
+                        <label for="book-description-0">Description:</label>
+                        <textarea class="book-desc-input" style="min-height: 80px;" placeholder="Brief description of the book..." id="book-description-0"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Cover Image URL:</label>
-                        <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/...">
+                        <label for="book-cover-image-0">Cover Image URL:</label>
+                        <input type="url" class="book-cover-input" placeholder="https://covers.openlibrary.org/b/isbn/..." id="book-cover-image-0">
                     </div>
                     <div class="form-group">
-                        <label>Cover Alt Text:</label>
-                        <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]">
+                        <label for="book-cover-alt-text-0">Cover Alt Text:</label>
+                        <input type="text" class="book-alt-input" placeholder="e.g., Book cover of [Title] by [Author]" id="book-cover-alt-text-0">
                     </div>
                     <div class="form-group">
-                        <label>Call Number (optional):</label>
-                        <input type="text" class="book-callnumber-input" placeholder="Call number">
+                        <label for="book-call-number-0">Call Number (optional):</label>
+                        <input type="text" class="book-callnumber-input" placeholder="Call number" id="book-call-number-0">
                     </div>
                     <div class="form-group">
-                        <label>URL/Permalink:</label>
-                        <input type="url" class="book-url-input" placeholder="https://...">
+                        <label for="book-permalink-0">URL/Permalink:</label>
+                        <input type="url" class="book-url-input" placeholder="https://..." id="book-permalink-0">
                     </div>
                 </div>
             `;
@@ -1109,37 +1116,37 @@ ${formattedBooks.join('\n')}
             entry.className = 'link-entry';
             entry.setAttribute('data-event-index', eventCounter);
             entry.innerHTML = `
-                <h4>Event ${eventCounter + 1}</h4>
+                <h4>Event ${eventCounter}</h4>
                 <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
                 <div class="form-group">
-                    <label>Title:*</label>
-                    <input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A">
+                    <label for="event-title-${eventCounter}">Title:*</label>
+                    <input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A" id="event-title-${eventCounter}">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Date:*</label>
-                        <input type="date" class="event-date-input">
+                        <label for="event-date-${eventCounter}">Date:*</label>
+                        <input type="date" class="event-date-input" id="event-date-${eventCounter}">
                     </div>
                     <div class="form-group">
-                        <label>Time:</label>
-                        <input type="time" class="event-time-input">
+                        <label for="event-time-${eventCounter}">Time:</label>
+                        <input type="time" class="event-time-input" id="event-time-${eventCounter}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Location:</label>
-                    <input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library">
+                    <label for="event-location-${eventCounter}">Location:</label>
+                    <input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library" id="event-location-${eventCounter}">
                 </div>
                 <div class="form-group">
-                    <label>Description:*</label>
-                    <textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..."></textarea>
+                    <label for="event-description-${eventCounter}">Description:*</label>
+                    <textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..." id="event-description-${eventCounter}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Link (optional):</label>
-                    <input type="url" class="event-link-input" placeholder="https://...">
+                    <label for="event-link-url-${eventCounter}">Link (optional):</label>
+                    <input type="url" class="event-link-input" placeholder="https://..." id="event-link-url-${eventCounter}">
                 </div>
                 <div class="form-group">
-                    <label>Link Text (if link provided):</label>
-                    <input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More">
+                    <label for="event-link-text-${eventCounter}">Link Text (if link provided):</label>
+                    <input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More" id="event-link-text-${eventCounter}">
                 </div>`;
             container.appendChild(entry);
             eventCounter++;
@@ -1213,15 +1220,15 @@ ${formattedBooks.join('\n')}
                 <div class="link-entry" data-event-index="0">
                     <h4>Event 1</h4>
                     <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
-                    <div class="form-group"><label>Title:*</label><input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A"></div>
+                    <div class="form-group"><label for="event-title-0">Title:*</label><input type="text" class="event-title-input" placeholder="e.g., Author Reading & Q&A" id="event-title-0"></div>
                     <div class="form-row">
-                        <div class="form-group"><label>Date:*</label><input type="date" class="event-date-input"></div>
-                        <div class="form-group"><label>Time:</label><input type="time" class="event-time-input"></div>
+                        <div class="form-group"><label for="event-date-0">Date:*</label><input type="date" class="event-date-input" id="event-date-0"></div>
+                        <div class="form-group"><label for="event-time-0">Time:</label><input type="time" class="event-time-input" id="event-time-0"></div>
                     </div>
-                    <div class="form-group"><label>Location:</label><input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library"></div>
-                    <div class="form-group"><label>Description:*</label><textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..."></textarea></div>
-                    <div class="form-group"><label>Link (optional):</label><input type="url" class="event-link-input" placeholder="https://..."></div>
-                    <div class="form-group"><label>Link Text (if link provided):</label><input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More"></div>
+                    <div class="form-group"><label for="event-location-0">Location:</label><input type="text" class="event-location-input" placeholder="e.g., Sherman Fairchild Library" id="event-location-0"></div>
+                    <div class="form-group"><label for="event-description-0">Description:*</label><textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..." id="event-description-0"></textarea></div>
+                    <div class="form-group"><label for="event-link-url-0">Link (optional):</label><input type="url" class="event-link-input" placeholder="https://..." id="event-link-url-0"></div>
+                    <div class="form-group"><label for="event-link-text-0">Link Text (if link provided):</label><input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More" id="event-link-text-0"></div>
                 </div>`;
             document.getElementById('event-output').value = '';
             document.getElementById('event-preview-container').innerHTML = '';
@@ -1304,15 +1311,15 @@ ${formattedBooks.join('\n')}
                         entry.innerHTML = `
                             <h4>Event ${i + 1}</h4>
                             <button class="remove-link-btn" onclick="removeEventEntry(this)">Remove</button>
-                            <div class="form-group"><label>Title:*</label><input type="text" class="event-title-input" value="${title.replace(/"/g, '&quot;')}" placeholder="e.g., Author Reading & Q&A"></div>
+                            <div class="form-group"><label for="event-title-${i}">Title:*</label><input type="text" class="event-title-input" id="event-title-${i}" value="${title.replace(/"/g, '&quot;')}" placeholder="e.g., Author Reading & Q&A"></div>
                             <div class="form-row">
-                                <div class="form-group"><label>Date:*</label><input type="date" class="event-date-input" value="${dateVal}"></div>
-                                <div class="form-group"><label>Time:</label><input type="time" class="event-time-input" value="${timeVal}"></div>
+                                <div class="form-group"><label for="event-date-${i}">Date:*</label><input type="date" class="event-date-input" id="event-date-${i}" value="${dateVal}"></div>
+                                <div class="form-group"><label for="event-time-${i}">Time:</label><input type="time" class="event-time-input" id="event-time-${i}" value="${timeVal}"></div>
                             </div>
-                            <div class="form-group"><label>Location:</label><input type="text" class="event-location-input" value="${location.replace(/"/g, '&quot;')}" placeholder="e.g., Sherman Fairchild Library"></div>
-                            <div class="form-group"><label>Description:*</label><textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event...">${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea></div>
-                            <div class="form-group"><label>Link (optional):</label><input type="url" class="event-link-input" value="${url}" placeholder="https://..."></div>
-                            <div class="form-group"><label>Link Text (if link provided):</label><input type="text" class="event-link-text-input" placeholder="e.g., Register Now, Learn More"></div>`;
+                            <div class="form-group"><label for="event-location-${i}">Location:</label><input type="text" class="event-location-input" id="event-location-${i}" value="${location.replace(/"/g, '&quot;')}" placeholder="e.g., Sherman Fairchild Library"></div>
+                            <div class="form-group"><label for="event-description-${i}">Description:*</label><textarea class="event-description-input" style="min-height: 120px;" placeholder="Describe the event..." id="event-description-${i}">${description.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea></div>
+                            <div class="form-group"><label for="event-link-url-${i}">Link (optional):</label><input type="url" class="event-link-input" id="event-link-url-${i}" value="${url}" placeholder="https://..."></div>
+                            <div class="form-group"><label for="event-link-text-${i}">Link Text (if link provided):</label><input type="text" class="event-link-text-input" id="event-link-text-${i}" placeholder="e.g., Register Now, Learn More"></div>`;
                         container.appendChild(entry);
                         eventCounter = i + 1;
                     });
@@ -1352,19 +1359,19 @@ ${formattedBooks.join('\n')}
             newEntry.className = 'link-entry';
             newEntry.setAttribute('data-link-index', linkCounter);
             newEntry.innerHTML = `
-                <h4>Link ${linkCounter + 1}</h4>
+                <h4>Link ${linkCounter}</h4>
                 <button class="remove-link-btn" onclick="removeLinkEntry(this)">Remove</button>
                 <div class="form-group">
-                    <label for="link-title">Link Title:*</label>
-                    <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" id="link-title">
+                    <label for="link-title-${linkCounter}">Link Title:*</label>
+                    <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" id="link-title-${linkCounter}">
                 </div>
                 <div class="form-group">
-                    <label for="link-url">URL:*</label>
-                    <input type="url" class="link-url-input" placeholder="https://..." id="link-url">
+                    <label for="link-url-${linkCounter}">URL:*</label>
+                    <input type="url" class="link-url-input" placeholder="https://..." id="link-url-${linkCounter}">
                 </div>
                 <div class="form-group">
-                    <label for="link-description">Description:</label>
-                    <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..." id="link-description"></textarea>
+                    <label for="link-description-${linkCounter}">Description:</label>
+                    <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..." id="link-description-${linkCounter}"></textarea>
                 </div>
             `;
             container.appendChild(newEntry);
@@ -1440,16 +1447,16 @@ ${formattedBooks.join('\n')}
                         <h4>Link ${i + 1}</h4>
                         ${removeBtn}
                         <div class="form-group">
-                            <label for="link-title">Link Title:*</label>
-                            <input type="text" id="link-title" class="link-title-input" placeholder="e.g., ACM Digital Library" value="${title.replace(/"/g, '&quot;')}">
+                            <label for="link-title-${i}">Link Title:*</label>
+                            <input type="text" id="link-title-${i}" class="link-title-input" placeholder="e.g., ACM Digital Library" value="${title.replace(/"/g, '&quot;')}">
                         </div>
                         <div class="form-group">
-                            <label for="link-url">URL:*</label>
-                            <input type="url" id="link-url" class="link-url-input" placeholder="https://..." value="${url}">
+                            <label for="link-url-${i}">URL:*</label>
+                            <input type="url" id="link-url-${i}" class="link-url-input" placeholder="https://..." value="${url}">
                         </div>
                         <div class="form-group">
-                            <label for="link-description">Description:</label>
-                            <textarea class="link-desc-input" id="link-description" style="min-height: 80px;" placeholder="Brief description of this resource...">${description}</textarea>
+                            <label for="link-description-${i}">Description:</label>
+                            <textarea class="link-desc-input" id="link-description-${i}" style="min-height: 80px;" placeholder="Brief description of this resource...">${description}</textarea>
                         </div>
                     `;
                     container.appendChild(entry);
@@ -1470,16 +1477,16 @@ ${formattedBooks.join('\n')}
                         <h4>Link ${i + 1}</h4>
                         ${removeBtn}
                         <div class="form-group">
-                            <label>Link Title:*</label>
-                            <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" value="${url}">
+                            <label for="link-title-${i}">Link Title:*</label>
+                            <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" id="link-title-${i}" value="${url}">
                         </div>
                         <div class="form-group">
-                            <label>URL:*</label>
-                            <input type="url" class="link-url-input" placeholder="https://..." value="${url}">
+                            <label for="link-url-${i}">URL:*</label>
+                            <input type="url" class="link-url-input" placeholder="https://..." id="link-url-${i}" value="${url}">
                         </div>
                         <div class="form-group">
-                            <label>Description:</label>
-                            <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..."></textarea>
+                            <label for="link-description-${i}">Description:</label>
+                            <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..." id="link-description-${i}"></textarea>
                         </div>
                     `;
                     container.appendChild(entry);
@@ -1533,7 +1540,7 @@ ${formattedBooks.join('\n')}
 
             links.forEach(link => {
                 html += `    <div class="link-item">\n`;
-                html += `        <div class="link-title"><a href="${link.url}" target="_blank">${link.title}</a></div>\n`;
+                html += `        <div class="link-title"><a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.title}${EXT_LINK_ICON}</a></div>\n`;
                 if (link.description) {
                     html += `        <div class="link-description">${link.description}</div>\n`;
                 }
@@ -1580,16 +1587,16 @@ ${formattedBooks.join('\n')}
                 <div class="link-entry" data-link-index="0">
                     <h4>Link 1</h4>
                     <div class="form-group">
-                        <label>Link Title:*</label>
-                        <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library">
+                        <label for="link-title-0">Link Title:*</label>
+                        <input type="text" class="link-title-input" placeholder="e.g., ACM Digital Library" id="link-title-0">
                     </div>
                     <div class="form-group">
-                        <label>URL:*</label>
-                        <input type="url" class="link-url-input" placeholder="https://...">
+                        <label for="link-url-0">URL:*</label>
+                        <input type="url" class="link-url-input" placeholder="https://..." id="link-url-0">
                     </div>
                     <div class="form-group">
-                        <label>Description:</label>
-                        <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..."></textarea>
+                        <label for="link-description-0">Description:</label>
+                        <textarea class="link-desc-input" style="min-height: 80px;" placeholder="Brief description of this resource..." id="link-description-0"></textarea>
                     </div>
                 </div>
             `;
@@ -1610,31 +1617,31 @@ ${formattedBooks.join('\n')}
                     <h2 class="card-number">Card ${i}</h2>
                     <button class="remove-link-btn" onclick="removeCardEntry(this)" aria-label="card-remove-button">Remove</button>
                     <div class="form-group">
-                        <label for="card-title">Title:*</label>
-                        <input type="text" class="card-title-input" placeholder="Card title" id="card-title">
+                        <label for="card-title-${i}">Title:*</label>
+                        <input type="text" class="card-title-input" placeholder="Card title" id="card-title-${i}">
                     </div>
                     <div class="form-group">
-                        <label for="card-description">Description:</label>
-                        <textarea class="card-description-input" style="min-height: 80px;" placeholder="Brief description for this card..." id="card-description"></textarea>
+                        <label for="card-description-${i}">Description:</label>
+                        <textarea class="card-description-input" style="min-height: 80px;" placeholder="Brief description for this card..." id="card-description-${i}"></textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="card-image-url">Image URL:</label>
-                            <input type="url" class="card-image-input" placeholder="https://..." id="card-image-url">
+                            <label for="card-image-url-${i}">Image URL:</label>
+                            <input type="url" class="card-image-input" placeholder="https://..." id="card-image-url-${i}">
                         </div>
                         <div class="form-group">
-                            <label for="card-image-alt-text">Image Alt Text:</label>
-                            <input type="text" class="card-alt-input" placeholder="Description of image" id="card-image-alt-text">
+                            <label for="card-image-alt-text-${i}">Image Alt Text:</label>
+                            <input type="text" class="card-alt-input" placeholder="Description of image" id="card-image-alt-text-${i}">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="card-link-url">Link URL:</label>
-                            <input type="url" class="card-link-input" placeholder="https://..." id="card-link-url">
+                            <label for="card-link-url-${i}">Link URL:</label>
+                            <input type="url" class="card-link-input" placeholder="https://..." id="card-link-url-${i}">
                         </div>
                         <div class="form-group">
-                            <label for="card-link-text">Link Text:</label>
-                            <input type="text" class="card-link-text-input" placeholder="Read more" id="card-link-text">
+                            <label for="card-link-text-${i}">Link Text:</label>
+                            <input type="text" class="card-link-text-input" placeholder="Read more" id="card-link-text-${i}">
                         </div>
                     </div>
                 </div>`;
