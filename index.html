@@ -1711,9 +1711,7 @@ ${attributes.join('\n')}
                 }
 
                 listEl.innerHTML = data.posts.map(post => {
-                    const postUrl = new URL('post.html', window.location.href);
-                    postUrl.searchParams.set('id', post.id);
-                    const url = postUrl.toString();
+                    const url = new URL(`posts/${post.id}.html`, window.location.href).toString();
 
                     const thumb = post.image
                         ? `<img class="blog-post-thumb" src="${escapeAttr(post.image)}" alt="" loading="lazy">`
