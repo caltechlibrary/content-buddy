@@ -1,0 +1,26 @@
+name: Fetch Blog Feed
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and process feed
+        run: python3 scripts/fetch-feed.py
+
+      - name: Commit posts.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts.json
+          git diff --staged --quiet || git commit -m "chore: update posts.json from blog feed"
+          git push
