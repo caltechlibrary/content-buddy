@@ -1691,7 +1691,6 @@ ${attributes.join('\n')}
         // ===== BLOG POSTS TAB FUNCTIONS =====
         const COPY_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
         const CHECK_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 9 17 20 6"></polyline></svg>`;
-        const REFRESH_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>`;
 
         let blogPostsLoaded = false;
 
@@ -1702,7 +1701,7 @@ ${attributes.join('\n')}
             listEl.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">Loading posts…</p>';
 
             try {
-                const res = await fetch(`posts.json?t=${Date.now()}`);
+                const res = await fetch(`posts.json?t=${Date.now()}`, { cache: 'no-store' });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
 
@@ -1742,25 +1741,13 @@ ${attributes.join('\n')}
 
                 const updated = new Date(data.updated).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
                 statusEl.className = 'status success';
-                statusEl.style.display = 'flex';
-                statusEl.style.alignItems = 'center';
-                statusEl.style.justifyContent = 'space-between';
-                statusEl.innerHTML = `<span>${data.posts.length} posts · Feed last synced ${updated}</span><button onclick="refreshBlogPosts()" class="blog-copy-btn" style="background:white;border-color:white;color:#155724;">${REFRESH_ICON_SVG} Refresh</button>`;
+                statusEl.textContent = `${data.posts.length} posts · Last synced ${updated} · Updates every 15 min`;
 
             } catch (err) {
                 listEl.innerHTML = '';
                 statusEl.textContent = 'Could not load posts.json. Run the GitHub Action to generate it.';
                 statusEl.className = 'status error';
             }
-        }
-
-        function refreshBlogPosts() {
-            blogPostsLoaded = false;
-            const statusEl = document.getElementById('blog-load-status');
-            statusEl.style.removeProperty('display');
-            statusEl.style.removeProperty('align-items');
-            statusEl.style.removeProperty('justify-content');
-            loadBlogPosts();
         }
 
         async function copyBlogPostUrl(btn) {
