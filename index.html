@@ -1729,9 +1729,10 @@ ${attributes.join('\n')}
                             ${meta ? `<div class="blog-post-meta">${escapeHtml(meta)}</div>` : ''}
                             ${post.excerpt ? `<div class="blog-post-excerpt">${escapeHtml(post.excerpt)}</div>` : ''}
                         </div>
-                        <button class="blog-copy-btn" data-url="${escapeAttr(url)}" onclick="copyBlogPostUrl(this)" title="Copy URL for Publicate">
-                            ${COPY_ICON_SVG} Copy URL
-                        </button>
+                        <div class="blog-btn-stack">
+                            <button class="blog-copy-btn" data-url="${escapeAttr(url)}" onclick="copyBlogPostUrl(this)" title="Copy Content URL">${COPY_ICON_SVG} Content URL</button>
+                            ${post.link ? `<button class="blog-copy-btn" data-url="${escapeAttr(post.link)}" onclick="copyBlogPostUrl(this)" title="Copy Post Link">${COPY_ICON_SVG} Post Link</button>` : ''}
+                        </div>
                     </div>`;
                 }).join('');
 
@@ -1739,7 +1740,7 @@ ${attributes.join('\n')}
 
                 const updated = new Date(data.updated).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
                 statusEl.className = 'status success';
-                statusEl.textContent = `${data.posts.length} posts · Last synced ${updated} · Updates every 15 min`;
+                statusEl.textContent = `${data.posts.length} posts · Last synced ${updated} · Updates hourly`;
 
             } catch (err) {
                 listEl.innerHTML = '';

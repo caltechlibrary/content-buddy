@@ -794,6 +794,14 @@ textarea.code {
     line-height: 1.4;
 }
 
+.blog-btn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
 .blog-copy-btn {
     flex-shrink: 0;
     background: white;
