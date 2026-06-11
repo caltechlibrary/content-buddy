@@ -409,6 +409,7 @@
             document.getElementById('tab-' + tabName).setAttribute('aria-selected', 'true');
 
             localStorage.setItem('activeTab', tabName);
+            history.replaceState(null, '', '#' + tabName);
         }
 
         // ===== SHARED HELPERS =====
@@ -1549,7 +1550,7 @@ ${formattedBooks.join('\n')}
             const container = document.getElementById('card-forms-container');
             container.innerHTML = cardEntryHTML(1);
 
-            const savedTab = localStorage.getItem('activeTab');
+            const savedTab = location.hash.slice(1) || localStorage.getItem('activeTab');
             if (savedTab && savedTab !== 'books') {
                 switchTab(savedTab);
                 if (savedTab === 'blog') loadBlogPosts();
