@@ -137,7 +137,7 @@ for entry in root.findall(t('entry')):
     })
 
 # ── Write posts.json ─────────────────────────────────────────────────────────
-out = {'updated': datetime.now(timezone.utc).isoformat(), 'posts': posts}
+out = {'posts': posts}
 with open('posts.json', 'w', encoding='utf-8') as f:
     json.dump(out, f, indent=2, ensure_ascii=False)
 

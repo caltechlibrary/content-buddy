@@ -1738,13 +1738,12 @@ ${attributes.join('\n')}
 
                 blogPostsLoaded = true;
 
-                const updated = new Date(data.updated).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-                statusEl.className = 'status success';
-                statusEl.textContent = `${data.posts.length} posts · Last synced ${updated} · Updates hourly`;
+                statusEl.className = 'status info';
+                statusEl.textContent = `${data.posts.length} posts · Updates hourly`;
 
             } catch (err) {
                 listEl.innerHTML = '';
-                statusEl.textContent = 'Could not load posts.json. Run the GitHub Action to generate it.';
+                statusEl.textContent = 'Could not load feed. Contact DLD for troubleshooting.';
                 statusEl.className = 'status error';
             }
         }
