@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "id": "e316588a-8f90-18f4-0619-9ce91d34ff71",
+      "title": "Reflections from the University Librarian, Summer 2026",
+      "date": "2026-06-25T22:31:00+00:00",
+      "author": "Adriana Popescu",
+      "link": "https://library.caltech.edu/blog/reflections-summer-2026",
+      "image": null,
+      "excerpt": "With the summer solstice now behind us, I cannot but take a few minutes to reflect on the past academic year and my first year as University Librarian at Caltech. For me, this was the year of firsts:..."
+    },
+    {
       "id": "715ce60c-bbd7-e04b-1f1d-b3f39a552a82",
       "title": "George Rossman Oral History Now Online",
       "date": "2026-06-08T17:09:16+00:00",
@@ -80,15 +89,6 @@
       "link": "https://library.caltech.edu/blog/women-leading-the-charge-resources-on-display-at-the-caltech-library",
       "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/MAR_-_Women_s_History_Month.jpg",
       "excerpt": "The National Women's History Alliance recognizes the range of overlapping challenges from climate change to healthcare to participating in the democratic process and so for this Women's History..."
-    },
-    {
-      "id": "4ad3148a-85c8-2562-b542-0251c2798e79",
-      "title": "#LoveData: A Mini Celebration of All Things Data Science",
-      "date": "2026-02-09T01:20:00+00:00",
-      "author": "Paula Gaetos",
-      "link": "https://library.caltech.edu/blog/lovedata-week-2026",
-      "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/love-data-week-2026.png",
-      "excerpt": "Love Data Week is the international celebration of all things data hosted by the Inter-university Consortium for Political and Social Research (ICPSR) . The Caltech Library is joining in with the..."
     }
   ]
 }
