@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "id": "d7517f22-bde6-a80a-b762-345a285906ab",
+      "title": "CaltechDATA Launches Expanded Storage Quotas",
+      "date": "2026-06-26T20:58:34+00:00",
+      "author": "Tom Morrell",
+      "link": "https://library.caltech.edu/blog/caltechdata-expanded-storage",
+      "image": null,
+      "excerpt": "Caltech Library is pleased to announce expanded storage allocations for the CaltechDATA repository, made possible through a National Science Foundation Campus Cyberinfrastructure grant. All..."
+    },
+    {
       "id": "e316588a-8f90-18f4-0619-9ce91d34ff71",
       "title": "Reflections from the University Librarian, Summer 2026",
       "date": "2026-06-25T22:31:00+00:00",
@@ -80,15 +89,6 @@
       "link": "https://library.caltech.edu/blog/10-years-3mt-caltech",
       "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/10Years-3MT-Banner.jpg",
       "excerpt": "A decade ago, a cohort of Caltech graduate students took part in a new Institute event that posed a wild challenge: Explain your thesis research clearly and compellingly in front of a general..."
-    },
-    {
-      "id": "d3c199a0-374d-d5a4-9ef8-0547605466ce",
-      "title": "Women Leading the Charge - Resources on Display at the Caltech Library",
-      "date": "2026-03-09T02:13:40+00:00",
-      "author": "Paula Gaetos",
-      "link": "https://library.caltech.edu/blog/women-leading-the-charge-resources-on-display-at-the-caltech-library",
-      "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/MAR_-_Women_s_History_Month.jpg",
-      "excerpt": "The National Women's History Alliance recognizes the range of overlapping challenges from climate change to healthcare to participating in the democratic process and so for this Women's History..."
     }
   ]
 }
