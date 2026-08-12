@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "id": "eee9622f-896e-8cda-b015-985c91b96d8e",
+      "title": "Responding to Open Science Framework Changes",
+      "date": "2026-08-12T21:59:35+00:00",
+      "author": "Tom Morrell",
+      "link": "https://library.caltech.edu/blog/responding-to-open-science-framework-changes",
+      "image": null,
+      "excerpt": "Caltech Library is committed to supporting researchers through the upcoming changes to the Open Science Framework (OSF). Files that would have been previously part of an OSF Project can be uploaded..."
+    },
+    {
       "id": "d7517f22-bde6-a80a-b762-345a285906ab",
       "title": "CaltechDATA Launches Expanded Storage Quotas",
       "date": "2026-06-26T20:58:34+00:00",
@@ -80,15 +89,6 @@
       "link": "https://library.caltech.edu/blog/not-a-garage-band-but-a-basement-exhibit-archives-display-in-rathskeller-highlights-athen",
       "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/297487/images/Rathimage.jpg",
       "excerpt": "Visitors to the Athenaeum basement’s newly renovated Rathskeller bar and game room—the Ath’s Rath—will have noticed that the anteroom directly off the bar has undergone its own makeover, into a..."
-    },
-    {
-      "id": "db7b93ed-cfda-85da-eb7b-870e20d43640",
-      "title": "3MT Marks Its Tenth Anniversary at Caltech",
-      "date": "2026-03-17T23:20:35+00:00",
-      "author": "Paula Gaetos",
-      "link": "https://library.caltech.edu/blog/10-years-3mt-caltech",
-      "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/10Years-3MT-Banner.jpg",
-      "excerpt": "A decade ago, a cohort of Caltech graduate students took part in a new Institute event that posed a wild challenge: Explain your thesis research clearly and compellingly in front of a general..."
     }
   ]
 }
