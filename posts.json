@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "id": "4e3ad8a6-42b1-f4a6-83d3-f1cf0b8b6633",
+      "title": "A Long-Ago Diary Entry and a Caltech Anniversary",
+      "date": "2026-09-01T15:51:47+00:00",
+      "author": "Heidi Aspaturian",
+      "link": "https://library.caltech.edu/blog/a-long-ago-diary-entry-and-a-caltech-anniversary",
+      "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/297487/images/ThroopCollage2.jpg",
+      "excerpt": "That Caltech is a worldwide leader in science and engineering is of course well known. That the Institute was founded by a staunch Abolitionist who in 1850 was hanged and burned in effigy in Chicago..."
+    },
+    {
       "id": "eee9622f-896e-8cda-b015-985c91b96d8e",
       "title": "Responding to Open Science Framework Changes",
       "date": "2026-08-12T21:59:35+00:00",
@@ -80,15 +89,6 @@
       "link": "https://library.caltech.edu/blog/in-person-visits-and-eresource-use",
       "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/Impact_Report_Blog.jpg",
       "excerpt": "Every year Caltech Library’s Access and Collections Services department gathers data for reporting purposes to our University Librarian and advisory boards. These impact reports offer a snapshot of..."
-    },
-    {
-      "id": "fb4ff9fa-e01b-a57c-56a7-151c271f1b31",
-      "title": "Not a Garage Band but a Basement Exhibit: Archives Display in Rathskeller Highlights Athenaeum’s Early Days",
-      "date": "2026-03-30T15:50:31+00:00",
-      "author": "Heidi Aspaturian",
-      "link": "https://library.caltech.edu/blog/not-a-garage-band-but-a-basement-exhibit-archives-display-in-rathskeller-highlights-athen",
-      "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/297487/images/Rathimage.jpg",
-      "excerpt": "Visitors to the Athenaeum basement’s newly renovated Rathskeller bar and game room—the Ath’s Rath—will have noticed that the anteroom directly off the bar has undergone its own makeover, into a..."
     }
   ]
 }
