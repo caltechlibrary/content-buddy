@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "id": "486f5b57-1935-4ca5-18b1-29296e0e53a9",
+      "title": "Weird Science Reads from the Caltech Library",
+      "date": "2026-10-24T05:01:28+00:00",
+      "author": "Paula Gaetos",
+      "link": "https://library.caltech.edu/blog/weird-science-reads-caltech-library",
+      "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/168684/images/oct-weird-science-blog.jpg",
+      "excerpt": "Discovery and innovation, while exciting, can get a little unsettling. After all, when you're not always sure where something may lead, delving into the unknown can be just a little scary. As we wind..."
+    },
+    {
       "id": "21a8ca23-0c7f-c08a-6b5e-a3ed940a9b5a",
       "title": "Caltech Library Receives Major Grant to Launch an Open Source Fellowship Program",
       "date": "2026-10-14T20:44:25+00:00",
@@ -80,15 +89,6 @@
       "link": "https://library.caltech.edu/blog/george-rossman-oral-history-now-online",
       "image": "https://d2jv02qf7xgjwx.cloudfront.net/accounts/297487/images/GRRBlogGraphic.jpg",
       "excerpt": "Professor of Mineralogy, Emeritus, George Rossman (1944–2026), whose history of having “no formal training whatsoever in geology” never stood in the way of his becoming an internationally renowned..."
-    },
-    {
-      "id": "0f3103fd-95a4-6f81-a090-fc00a808d4a1",
-      "title": "CaltechDATA Upgrade on Tuesday, May 26",
-      "date": "2026-05-22T23:19:29+00:00",
-      "author": "Tom Morrell",
-      "link": "https://library.caltech.edu/blog/caltechdata-upgrade-on-tuesday-may-26",
-      "image": null,
-      "excerpt": "CaltechDATA will be closed for new uploads and record updates on Tuesday, May 26 as we conduct a major system upgrade. Please complete any uploads before Tuesday. We will send out another email once..."
     }
   ]
 }
